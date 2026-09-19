@@ -2,1826 +2,2997 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>PLAYBOX 100</title>
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#080a12">
+<title>PLAYBOX 1000</title>
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{
-margin:0;
-background:#08090d;
-color:#fff;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+*{box-sizing:border-box}
+:root{
+  --bg:#070910;
+  --panel:#10131d;
+  --panel2:#151927;
+  --line:rgba(255,255,255,.09);
+  --text:#f7f8ff;
+  --muted:#8e95aa;
+  --accent:#7c5cff;
+  --accent2:#20d9ff;
+  --good:#35e39a;
+  --bad:#ff5577;
+  --gold:#ffd45c;
+  --shadow:0 18px 50px rgba(0,0,0,.35);
 }
-button,input{font:inherit}
-button{cursor:pointer;color:#fff;border:0}
-.app{max-width:900px;margin:auto;padding:16px 14px 80px}
-
-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:15px
+body.light{
+  --bg:#f4f6fb;
+  --panel:#fff;
+  --panel2:#eef1f7;
+  --line:rgba(0,0,0,.08);
+  --text:#10121a;
+  --muted:#697084;
 }
-.logo{display:flex;gap:10px;align-items:center}
-.logoIcon{
-width:43px;height:43px;border-radius:14px;
-display:grid;place-items:center;
-background:linear-gradient(135deg,#8b7cff,#5144d8);
-font-size:21px
+html,body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+  min-height:100%;
+  overflow-x:hidden;
 }
-.logo h1{margin:0;font-size:20px}
-.logo small{color:#8d93a6;font-size:10px}
-
-.stats{display:flex;gap:5px}
-.stat{
-background:#11131a;
-border:1px solid #252936;
-border-radius:11px;
-padding:6px 8px;
-text-align:center
+button,input{
+  font:inherit;
 }
-.stat b{display:block;font-size:12px}
-.stat span{font-size:8px;color:#8d93a6}
-
-.hero{
-padding:22px;
-border-radius:23px;
-background:linear-gradient(135deg,#211d45,#11131a);
-border:1px solid #302b52;
+button{
+  border:0;
+  color:inherit;
+  cursor:pointer;
 }
-.hero h2{margin:0;font-size:28px}
-.hero p{
-color:#969caf;
-font-size:12px;
-line-height:1.6;
-margin:7px 0 0
+button:active{
+  transform:scale(.97);
 }
-.actions{
-display:flex;
-gap:7px;
-flex-wrap:wrap;
-margin-top:17px
+#app{
+  min-height:100vh;
+  padding-bottom:80px;
 }
-.primary,.secondary{
-padding:10px 13px;
-border-radius:11px;
-font-size:11px;
-font-weight:700
+.top{
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(20px);
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  border-bottom:1px solid var(--line);
 }
-.primary{background:#7668ed}
-.secondary{
-background:#181a23;
-border:1px solid #292d39
-}
-
-.daily{
-margin-top:12px;
-padding:13px;
-border:1px solid #29254a;
-border-radius:16px;
-background:#11131a;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px
-}
-.daily b{font-size:12px}
-.daily p{margin:3px 0 0;color:#858b9c;font-size:9px}
-
 .nav{
-display:flex;
-gap:6px;
-overflow-x:auto;
-padding:15px 0 8px
+  max-width:1200px;
+  margin:auto;
+  padding:15px 18px;
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
-.nav button{
-white-space:nowrap;
-padding:9px 12px;
-border-radius:10px;
-background:#11131a;
-border:1px solid #252936;
-font-size:10px;
-color:#8e94a6
+.logo{
+  font-weight:900;
+  font-size:20px;
+  letter-spacing:-.8px;
+  white-space:nowrap;
 }
-.nav button.active{
-background:#29234f;
-color:white;
-border-color:#665cc0
+.logo span{
+  background:linear-gradient(100deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;
+  color:transparent;
 }
-
-.tools{display:flex;gap:7px;margin:7px 0 15px}
-.search{position:relative;flex:1}
-.search input{
-width:100%;
-padding:12px 12px 12px 35px;
-border-radius:12px;
-background:#11131a;
-border:1px solid #252936;
-outline:0;
-color:#fff;
-font-size:11px
+.navStats{
+  margin-left:auto;
+  display:flex;
+  gap:7px;
 }
-.search span{
-position:absolute;
-left:12px;
-top:9px;
-opacity:.6
+.stat{
+  background:var(--panel);
+  border:1px solid var(--line);
+  padding:8px 10px;
+  border-radius:12px;
+  font-size:12px;
+  white-space:nowrap;
 }
-.tool{
-width:43px;
-border-radius:12px;
-background:#11131a;
-border:1px solid #252936
+.navBtn{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:var(--panel);
+  border:1px solid var(--line);
 }
-
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:22px 18px;
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  padding:28px;
+  border:1px solid var(--line);
+  border-radius:28px;
+  background:
+    radial-gradient(circle at 85% 15%,rgba(32,217,255,.18),transparent 28%),
+    radial-gradient(circle at 20% 80%,rgba(124,92,255,.2),transparent 30%),
+    var(--panel);
+  box-shadow:var(--shadow);
+}
+.hero h1{
+  margin:0;
+  font-size:clamp(32px,7vw,66px);
+  line-height:.94;
+  letter-spacing:-3px;
+}
+.hero p{
+  color:var(--muted);
+  max-width:650px;
+  line-height:1.6;
+  margin:16px 0;
+}
+.heroBtns{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.primary{
+  background:linear-gradient(110deg,var(--accent),#9b7cff);
+  padding:12px 17px;
+  border-radius:13px;
+  font-weight:800;
+}
+.secondary{
+  background:var(--panel2);
+  border:1px solid var(--line);
+  padding:12px 17px;
+  border-radius:13px;
+  font-weight:700;
+}
 .section{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin:15px 2px 9px
+  margin-top:25px;
 }
-.section h3{margin:0;font-size:14px}
-.section span{font-size:9px;color:#7e8495}
-
-.games{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:8px
+.sectionHead{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:12px;
 }
-
+.sectionHead h2{
+  margin:0;
+  font-size:20px;
+}
+.sectionHead span{
+  color:var(--muted);
+  font-size:12px;
+}
+.search{
+  width:100%;
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--text);
+  padding:14px 16px;
+  border-radius:15px;
+  outline:none;
+}
+.filters{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:12px 0 4px;
+  scrollbar-width:none;
+}
+.filters::-webkit-scrollbar{display:none}
+.filter{
+  flex:none;
+  background:var(--panel);
+  border:1px solid var(--line);
+  padding:9px 13px;
+  border-radius:999px;
+  color:var(--muted);
+  font-size:12px;
+}
+.filter.active{
+  color:white;
+  background:var(--accent);
+  border-color:var(--accent);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
 .card{
-background:#11131a;
-border:1px solid #252936;
-border-radius:16px;
-padding:12px;
-min-height:142px;
-transition:.15s
+  position:relative;
+  min-height:190px;
+  padding:15px;
+  background:linear-gradient(145deg,var(--panel),var(--panel2));
+  border:1px solid var(--line);
+  border-radius:20px;
+  overflow:hidden;
+  transition:.2s;
 }
-.card:active{transform:scale(.97)}
+.card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(124,92,255,.45);
+}
 .cardTop{
-display:flex;
-justify-content:space-between
+  display:flex;
+  justify-content:space-between;
+  align-items:start;
 }
 .icon{
-width:39px;height:39px;
-border-radius:12px;
-background:#1c1f2a;
-display:grid;
-place-items:center;
-font-size:20px
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border-radius:14px;
+  background:rgba(124,92,255,.14);
+  font-size:22px;
 }
 .fav{
-background:#1a1c24;
-border-radius:8px;
-width:27px;height:27px;
-color:#676d7d
+  width:34px;
+  height:34px;
+  background:transparent;
+  color:#747b91;
+  font-size:18px;
 }
-.fav.on{color:#ff6684}
-.card h4{margin:9px 0 3px;font-size:12px}
+.fav.on{color:#ff5d8a}
+.card h3{
+  margin:13px 0 5px;
+  font-size:15px;
+}
 .card p{
-margin:0;
-font-size:9px;
-color:#858b9c;
-line-height:1.4
+  margin:0;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.45;
 }
-.cardBottom{
-display:flex;
-justify-content:space-between;
-margin-top:10px;
-font-size:8px
+.levelRow{
+  display:flex;
+  justify-content:space-between;
+  margin-top:13px;
+  color:var(--muted);
+  font-size:10px;
 }
-.cat{color:#9c91ff}
-.high{color:#facc15}
-
-/* GAME */
+.progress{
+  height:5px;
+  border-radius:99px;
+  background:rgba(255,255,255,.07);
+  margin-top:7px;
+  overflow:hidden;
+}
+.progress i{
+  display:block;
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+}
+.card button.play{
+  width:100%;
+  margin-top:12px;
+  padding:10px;
+  border-radius:11px;
+  background:var(--panel2);
+  border:1px solid var(--line);
+  font-weight:800;
+  font-size:12px;
+}
+.more{
+  display:block;
+  margin:20px auto;
+  padding:12px 20px;
+  border-radius:13px;
+  background:var(--panel);
+  border:1px solid var(--line);
+}
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:30;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(20px);
+  border-top:1px solid var(--line);
+  padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+}
+.bottomIn{
+  max-width:650px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+.bottom button{
+  background:transparent;
+  color:var(--muted);
+  padding:7px 3px;
+  font-size:10px;
+}
+.bottom button b{
+  display:block;
+  font-size:18px;
+  margin-bottom:2px;
+}
+.bottom button.active{color:var(--text)}
 .overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.78);
-backdrop-filter:blur(8px);
-display:none;
-align-items:center;
-justify-content:center;
-padding:10px;
-z-index:100
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:none;
+  background:rgba(4,5,10,.82);
+  backdrop-filter:blur(18px);
+  padding:12px;
 }
 .overlay.show{display:flex}
-
-.window{
-width:min(650px,100%);
-max-height:94vh;
-overflow:auto;
-background:#0d0f15;
-border:1px solid #292d38;
-border-radius:23px
+.gameWindow{
+  width:min(850px,100%);
+  height:min(92vh,900px);
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 30px 100px rgba(0,0,0,.55);
 }
-
 .gameHead{
-position:sticky;
-top:0;
-z-index:5;
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:12px;
-background:#0d0f15;
-border-bottom:1px solid #252936
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:13px 15px;
+  border-bottom:1px solid var(--line);
 }
-.gameHead b{font-size:13px}
-.gameHead small{
-display:block;
-font-size:8px;
-color:#777d8e;
-margin-top:2px
+.gameTitle{
+  flex:1;
+}
+.gameTitle strong{
+  display:block;
+  font-size:14px;
+}
+.gameTitle small{
+  color:var(--muted);
 }
 .close{
-width:35px;
-height:35px;
-border-radius:10px;
-background:#1b1e27
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:var(--panel2);
 }
-
-.content{padding:16px}
-.intro{text-align:center;margin-bottom:14px}
-.bigIcon{font-size:38px}
-.intro h2{margin:5px 0;font-size:20px}
-.intro p{margin:0;color:#858b9c;font-size:10px}
-
-.area{
-background:#11141c;
-border:1px solid #252936;
-border-radius:17px;
-padding:14px;
-min-height:230px
+.gameBody{
+  flex:1;
+  overflow:auto;
+  padding:18px;
 }
-
-.gstats{
-display:flex;
-gap:6px;
-margin-bottom:12px
+.gameStats{
+  display:flex;
+  gap:7px;
+  margin-bottom:15px;
 }
-.gs{
-flex:1;
-text-align:center;
-background:#191c24;
-border-radius:10px;
-padding:7px
+.gstat{
+  flex:1;
+  padding:9px;
+  text-align:center;
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:12px;
 }
-.gs b{display:block;font-size:13px}
-.gs span{font-size:8px;color:#7e8495}
-
-.center{text-align:center}
-.big{
-font-size:57px;
-font-weight:900;
-margin:20px 0;
-letter-spacing:-4px
+.gstat small{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
 }
-
-.answers{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:7px
+.gstat b{font-size:14px}
+.arena{
+  position:relative;
+  min-height:350px;
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:
+    radial-gradient(circle at 50% 30%,rgba(124,92,255,.12),transparent 45%),
+    #080b13;
 }
-.answer{
-min-height:52px;
-border-radius:12px;
-background:#191c24;
-border:1px solid #292d39;
-font-size:11px;
-font-weight:700
+.arena canvas{
+  width:100%;
+  height:100%;
+  min-height:350px;
+  display:block;
+  touch-action:none;
 }
-.answer.correct{
-background:#12321f;
-border-color:#4ade80
+.centerGame{
+  min-height:350px;
+  display:grid;
+  place-items:center;
+  text-align:center;
 }
-.answer.wrong{
-background:#381923;
-border-color:#fb7185
+.bigEmoji{
+  font-size:70px;
+  margin-bottom:10px;
 }
-
-.row{
-display:flex;
-gap:7px;
-margin-top:12px
+.gamePrompt{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-.5px;
 }
-.row button{flex:1}
-
-.startBtn{
-width:100%;
-padding:12px;
-border-radius:12px;
-background:#7668ed;
-font-weight:700;
-font-size:11px
+.sub{
+  color:var(--muted);
+  font-size:13px;
+  margin:8px 0 18px;
 }
-
-.msg{
-text-align:center;
-font-size:11px;
-margin-top:10px;
-min-height:18px
+.options{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
 }
-
-/* target */
-.targetArea{
-height:280px;
-position:relative;
-overflow:hidden;
-border-radius:14px;
-background:
-linear-gradient(#ffffff08 1px,transparent 1px),
-linear-gradient(90deg,#ffffff08 1px,transparent 1px),
-#0a0c11;
-background-size:25px 25px
+.option{
+  min-height:56px;
+  padding:12px;
+  border-radius:14px;
+  background:var(--panel2);
+  border:1px solid var(--line);
+  color:var(--text);
+  font-weight:800;
 }
-.target{
-position:absolute;
-width:45px;height:45px;
-border-radius:50%;
-background:linear-gradient(135deg,#b3aaff,#6456e8);
-box-shadow:0 0 25px #7668ed88
+.option:hover{
+  border-color:var(--accent);
 }
-
-/* memory */
-.memory{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:7px
+.bigAction{
+  width:min(320px,100%);
+  min-height:120px;
+  border-radius:25px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  font-size:28px;
+  font-weight:1000;
+  box-shadow:0 15px 45px rgba(124,92,255,.25);
 }
-.mem{
-aspect-ratio:1;
-border-radius:10px;
-background:#191c24;
-border:1px solid #292d39;
-display:grid;
-place-items:center;
-font-size:21px
+.inputRow{
+  display:flex;
+  gap:8px;
 }
-
-/* tap */
-.tapButton{
-width:150px;
-height:150px;
-border-radius:50%;
-background:linear-gradient(135deg,#8d7fff,#5546dc);
-font-size:18px;
-font-weight:900;
-box-shadow:0 0 40px #7668ed55
+.inputRow input{
+  flex:1;
+  min-width:0;
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:13px;
+  color:var(--text);
+  padding:13px;
+  outline:none;
 }
-
-/* result */
-.result{text-align:center;padding:25px 10px}
-.result .emoji{font-size:45px}
-.result h2{margin:7px 0}
-.result p{font-size:11px;color:#8b91a2}
+.message{
+  text-align:center;
+  color:var(--muted);
+  margin-top:14px;
+  min-height:20px;
+}
+.result{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  display:none;
+  place-items:center;
+  background:rgba(7,9,16,.88);
+  backdrop-filter:blur(12px);
+  text-align:center;
+  padding:25px;
+}
+.result.show{display:grid}
+.resultBox{
+  width:min(420px,100%);
+}
+.result h2{
+  font-size:36px;
+  margin:0 0 8px;
+}
+.result p{color:var(--muted)}
+.resultBtns{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:90px;
+  transform:translateX(-50%) translateY(20px);
+  z-index:300;
+  opacity:0;
+  pointer-events:none;
+  background:#181c2a;
+  border:1px solid var(--line);
+  padding:11px 15px;
+  border-radius:14px;
+  font-size:12px;
+  transition:.25s;
+}
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+.confetti{
+  position:fixed;
+  z-index:400;
+  width:8px;
+  height:8px;
+  pointer-events:none;
+  animation:fall 1.3s ease-out forwards;
+}
+@keyframes fall{
+  to{
+    transform:translate(var(--x),var(--y)) rotate(720deg);
+    opacity:0;
+  }
+}
+.hidden{display:none!important}
+.empty{
+  padding:50px 20px;
+  text-align:center;
+  color:var(--muted);
+}
+.statsPanel{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.bigStat{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:18px;
+}
+.bigStat b{
+  display:block;
+  font-size:26px;
+}
+.bigStat span{
+  color:var(--muted);
+  font-size:11px;
+}
+.achievement{
+  padding:14px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:var(--panel);
+  margin-bottom:8px;
+}
+.achievement.locked{opacity:.45}
+.achievement b{display:block}
+.achievement span{font-size:11px;color:var(--muted)}
+.range{
+  width:100%;
+}
+@media(min-width:700px){
+  .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .hero{padding:42px}
+  .statsPanel{grid-template-columns:repeat(4,1fr)}
+}
 </style>
 </head>
 
 <body>
-
-<div class="app">
-
-<header>
-<div class="logo">
-<div class="logoIcon">🎮</div>
-<div>
-<h1>PLAYBOX 100</h1>
-<small>100 tiny games. One place.</small>
-</div>
-</div>
-
-<div class="stats">
-<div class="stat"><b id="coins">0</b><span>COINS</span></div>
-<div class="stat"><b id="stars">0</b><span>STARS</span></div>
-</div>
-</header>
-
-<section class="hero">
-<h2>Play something. 💜</h2>
-<p>
-A mini arcade made for two. Pick a game, beat your score,
-collect coins and discover all 100 games.
-</p>
-
-<div class="actions">
-<button class="primary" onclick="randomGame()">🎲 Random Game</button>
-<button class="secondary" onclick="showFavorites()">❤️ Favorites</button>
-<button class="secondary" onclick="showRecent()">🕘 Recent</button>
-</div>
-</section>
-
-<div class="daily">
-<div>
-<b>🌟 Daily Challenge</b>
-<p id="dailyText">Today's challenge is waiting for you.</p>
-</div>
-<button class="primary" onclick="dailyGame()">PLAY</button>
-</div>
-
-<div class="nav" id="nav">
-<button class="active" onclick="filterGames('All',this)">All</button>
-<button onclick="filterGames('Brain',this)">🧠 Brain</button>
-<button onclick="filterGames('Reflex',this)">⚡ Reflex</button>
-<button onclick="filterGames('Arcade',this)">🎯 Arcade</button>
-<button onclick="filterGames('Couple',this)">💜 Couple</button>
-<button onclick="filterGames('Creative',this)">🎨 Creative</button>
-</div>
-
-<div class="tools">
-<div class="search">
-<span>🔎</span>
-<input id="search" placeholder="Search games..." oninput="renderGames()">
-</div>
-<button class="tool" onclick="randomGame()">🎲</button>
-<button class="tool" onclick="settings()">⚙️</button>
-</div>
-
-<div class="section">
-<h3>All Games</h3>
-<span id="count">100 games</span>
-</div>
-
-<div class="games" id="games"></div>
-
-</div>
-
-
-<!-- GAME WINDOW -->
+<div id="app"></div>
 
 <div class="overlay" id="overlay">
-<div class="window">
-
-<div class="gameHead">
-<div>
-<b id="gameTitle">Game</b>
-<small id="gameCategory">Category</small>
-</div>
-<button class="close" onclick="closeGame()">✕</button>
-</div>
-
-<div class="content">
-
-<div class="intro">
-<div class="bigIcon" id="gameIcon">🎮</div>
-<h2 id="introTitle">Game</h2>
-<p id="gameDesc">Description</p>
+  <div class="gameWindow">
+    <div class="gameHead">
+      <div class="gameTitle" id="gameTitle"></div>
+      <button class="close" onclick="closeGame()">✕</button>
+    </div>
+    <div class="gameBody" id="gameBody"></div>
+  </div>
 </div>
 
-<div class="area" id="gameArea"></div>
-
-</div>
-</div>
-</div>
-
+<div class="toast" id="toast"></div>
 
 <script>
+/* =========================================================
+   PLAYBOX 1000
+   100 CORE MECHANICS × 10 VARIANTS = 1,000 GAMES
+========================================================= */
 
-/* =========================
-   DATA
-========================= */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+}[m]));
 
-const games=[
-["Memory Match","🧠","Brain","Find the matching pairs.","memory"],
-["Number Guess","🔢","Brain","Guess the hidden number.","number"],
-["Higher or Lower","📈","Brain","Guess what comes next.","higher"],
-["Odd One Out","👀","Brain","Find the different emoji.","odd"],
-["Quick Math","➗","Brain","Solve before time runs out.","math"],
-["Color Logic","🎨","Brain","Choose the correct color.","color"],
-["Pattern Memory","🧩","Brain","Remember the pattern.","memory"],
-["Sequence","🔢","Brain","Find the next number.","sequence"],
-["Missing Number","❓","Brain","Complete the sequence.","sequence"],
-["Word Scramble","🔤","Brain","Unscramble the word.","word"],
-["Anagram","📝","Brain","Make the word.","word"],
-["Emoji Guess","😂","Brain","Guess the meaning.","emoji"],
-["Riddle Rush","💡","Brain","Solve the riddle.","riddle"],
-["True or False","✅","Brain","Test your knowledge.","tf"],
-["Trivia","📚","Brain","Answer the question.","trivia"],
-["Reaction Quiz","⚡","Brain","Think fast.","reaction"],
-["Spot Difference","🔍","Brain","Spot what changed.","odd"],
-["Logic Grid","🧠","Brain","Choose logically.","logic"],
-["Code Breaker","🔐","Brain","Crack the code.","code"],
-["Mini Sudoku","🔢","Brain","Complete the puzzle.","sudoku"],
-
-["Tap The Target","🎯","Reflex","Hit the target quickly.","target"],
-["Reaction Test","⚡","Reflex","Test your reaction speed.","reaction"],
-["Don't Tap Red","🔴","Reflex","Tap only safe targets.","tap"],
-["Falling Objects","⬇️","Reflex","Catch falling objects.","target"],
-["Catch The Coin","🪙","Reflex","Catch as many as possible.","tap"],
-["Dodge","💨","Reflex","Survive the timer.","target"],
-["Speed Tap","👆","Reflex","Tap as fast as possible.","tap"],
-["Timing Bar","⏱️","Reflex","Stop at the perfect point.","timing"],
-["Moving Target","🎯","Reflex","Hit moving targets.","target"],
-["Quick Click","🖱️","Reflex","Click quickly.","tap"],
-["Avoid The Walls","🧱","Reflex","Don't touch the walls.","target"],
-["Color Tap","🌈","Reflex","Tap the right color.","color"],
-["Hit The Circle","⭕","Reflex","Hit it before it moves.","target"],
-["Laser Dodge","🔴","Reflex","Avoid the laser.","target"],
-["Falling Blocks","🟪","Reflex","React quickly.","tap"],
-["Reflex Memory","🧠","Reflex","Remember the flash.","memory"],
-["One Second","⏱️","Reflex","Stop near one second.","timing"],
-["Fast Finger","☝️","Reflex","Tap rapidly.","tap"],
-["Perfect Timing","🎯","Reflex","Find the perfect moment.","timing"],
-["Impossible Button","😈","Reflex","Try to beat it.","tap"],
-
-["Snake","🐍","Arcade","Classic snake.","snake"],
-["Breakout","🧱","Arcade","Break the blocks.","breakout"],
-["Flappy Bird","🐦","Arcade","Fly through gaps.","tap"],
-["Mini Runner","🏃","Arcade","Run as long as possible.","tap"],
-["Space Shooter","🚀","Arcade","Defend space.","tap"],
-["Asteroid Dodge","☄️","Arcade","Avoid asteroids.","target"],
-["Coin Collector","🪙","Arcade","Collect coins.","tap"],
-["Maze Escape","🌀","Arcade","Escape the maze.","maze"],
-["Platform Jump","🦘","Arcade","Jump higher.","tap"],
-["Tower Stack","🏗️","Arcade","Stack perfectly.","timing"],
-["Ball Bounce","⚽","Arcade","Keep the ball alive.","tap"],
-["Brick Breaker","🧱","Arcade","Break bricks.","breakout"],
-["Mini Golf","⛳","Arcade","Reach the hole.","timing"],
-["Pinball","🎰","Arcade","Keep bouncing.","tap"],
-["Endless Road","🛣️","Arcade","Stay on the road.","target"],
-["Car Dodge","🚗","Arcade","Avoid traffic.","target"],
-["Rocket Launch","🚀","Arcade","Launch as high as possible.","tap"],
-["Balloon Pop","🎈","Arcade","Pop balloons.","tap"],
-["Target Shooter","🔫","Arcade","Hit targets.","target"],
-["Survival Arena","⚔️","Arcade","Survive the timer.","target"],
-
-["Who Knows Who?","💜","Couple","See how well you know each other.","couple"],
-["This Or That","💭","Couple","Pick your choice.","choice"],
-["Guess My Answer","💜","Couple","Guess what they would choose.","choice"],
-["Favorite Things","⭐","Couple","Pick your favorite.","choice"],
-["Memory Of Us","📸","Couple","Test your memories.","choice"],
-["Finish My Sentence","💬","Couple","Complete the sentence.","choice"],
-["Emoji Story","🥰","Couple","Create a story.","choice"],
-["Pick One","👉","Couple","Choose one.","choice"],
-["Random Question","❓","Couple","Answer honestly.","choice"],
-["Would You Rather","🤔","Couple","Choose between two.","choice"],
-["Guess The Song","🎵","Couple","Guess the song.","choice"],
-["Guess The Movie","🎬","Couple","Guess the movie.","choice"],
-["Couple Trivia","💞","Couple","Relationship trivia.","choice"],
-["Secret Question","🔐","Couple","A random question.","choice"],
-["Truth Or Dare","😈","Couple","Choose truth or dare.","choice"],
-["Mood Picker","😊","Couple","Pick your mood.","choice"],
-["Compliment Generator","💌","Couple","Get a cute message.","choice"],
-["Date Idea Picker","🌹","Couple","Choose your next date.","choice"],
-["Future Guess","🔮","Couple","Imagine the future.","choice"],
-["Compatibility Quiz","💞","Couple","See your match.","choice"],
-
-["Pixel Painter","🎨","Creative","Paint pixels.","creative"],
-["Color Mixer","🌈","Creative","Mix colors.","creative"],
-["Drawing Pad","✏️","Creative","Draw anything.","creative"],
-["Make A Logo","✨","Creative","Create a logo.","creative"],
-["Room Designer","🏠","Creative","Design a room.","creative"],
-["Character Creator","🧍","Creative","Build a character.","creative"],
-["Outfit Builder","👕","Creative","Choose an outfit.","creative"],
-["Sticker Maker","💬","Creative","Make a sticker.","creative"],
-["Music Pad","🎵","Creative","Make sounds.","creative"],
-["Beat Maker","🥁","Creative","Create a beat.","creative"],
-["Name Generator","✨","Creative","Generate names.","creative"],
-["Story Builder","📖","Creative","Build a story.","creative"],
-["Pixel Art Challenge","🟦","Creative","Copy the pattern.","creative"],
-["Emoji Composer","😀","Creative","Compose emojis.","creative"],
-["Pattern Creator","🔷","Creative","Create patterns.","creative"],
-["Mini Garden","🌱","Creative","Grow a garden.","creative"],
-["Virtual Aquarium","🐠","Creative","Build an aquarium.","creative"],
-["Digital Pet","🐱","Creative","Take care of a pet.","creative"],
-["Tiny World Builder","🌎","Creative","Build a tiny world.","creative"],
-["Secret Game","🔐","Creative","The final secret.","secret"]
+const categories=[
+ "All","Brain","Reflex","Arcade","Puzzle","Words",
+ "Memory","Math","Action","Creative","Couple","Chill"
 ];
 
-let currentFilter="All";
-let currentGame=null;
-let gameTimer=null;
-let gameScore=0;
-let gameData={};
-let state=JSON.parse(localStorage.getItem("playbox100"))||{
-coins:0,
-stars:0,
-played:[],
-favorites:[],
-highscores:{},
-sound:true,
-vibration:true
+const coreGames=[
+ ["Memory Match","🧠","Memory","memory","Match the hidden pairs."],
+ ["Number Guess","🔢","Math","guess","Find the secret number."],
+ ["Higher or Lower","⬆️","Brain","higher","Predict the next number."],
+ ["Odd One Out","👀","Brain","odd","Find what does not belong."],
+ ["Quick Math","➗","Math","math","Solve before time runs out."],
+ ["Color Logic","🎨","Puzzle","color","Follow the color rule."],
+ ["Pattern Memory","🧩","Memory","pattern","Remember the sequence."],
+ ["Sequence","🔢","Brain","sequence","Complete the sequence."],
+ ["Missing Number","❓","Math","missing","Find the missing value."],
+ ["Word Scramble","🔤","Words","word","Unscramble the word."],
+ ["Anagram","📝","Words","word","Build the hidden word."],
+ ["Emoji Guess","😎","Brain","emoji","Guess the clue."],
+ ["Riddle Rush","💡","Brain","riddle","Solve the riddle."],
+ ["True or False","⚖️","Brain","tf","Choose correctly."],
+ ["Trivia","🌎","Brain","trivia","Test your knowledge."],
+ ["Reaction Quiz","⚡","Reflex","reaction","React at exactly the right time."],
+ ["Spot Difference","🔎","Puzzle","spot","Find the different tile."],
+ ["Logic Grid","🗂️","Puzzle","logic","Use the clues."],
+ ["Code Breaker","🔐","Puzzle","code","Crack the code."],
+ ["Mini Sudoku","9️⃣","Puzzle","sudoku","Complete the mini grid."],
+
+ ["Tap Target","🎯","Reflex","target","Tap the target."],
+ ["Reaction Test","⚡","Reflex","reaction","React as fast as possible."],
+ ["Don't Tap Red","🔴","Reflex","dontred","Avoid the danger."],
+ ["Falling Objects","⬇️","Reflex","fall","Catch the good ones."],
+ ["Catch Coin","🪙","Reflex","catch","Catch every coin."],
+ ["Dodge","💨","Action","dodge","Survive the incoming objects."],
+ ["Speed Tap","👆","Reflex","speedtap","Tap as fast as possible."],
+ ["Timing Bar","⏱️","Reflex","timing","Stop the bar perfectly."],
+ ["Moving Target","🎯","Reflex","moving","Hit moving targets."],
+ ["Quick Click","🖱️","Reflex","click","Click every target."],
+ ["Avoid Walls","🧱","Action","walls","Navigate without crashing."],
+ ["Color Tap","🌈","Reflex","colortap","Tap the requested color."],
+ ["Hit Circle","⭕","Reflex","circle","Hit the circle."],
+ ["Laser Dodge","🔦","Action","laser","Avoid laser lines."],
+ ["Falling Blocks","🟦","Action","blocks","Survive the blocks."],
+ ["Reflex Memory","🧠","Reflex","reflexmemory","Remember and react."],
+ ["One Second","⏳","Reflex","second","Stop exactly on time."],
+ ["Fast Finger","🔥","Reflex","fast","Prove your speed."],
+ ["Perfect Timing","🎯","Reflex","perfect","Hit the perfect zone."],
+ ["Impossible Button","😈","Reflex","impossible","Press it if you can."],
+
+ ["Snake","🐍","Arcade","snake","Grow without crashing."],
+ ["Breakout","🧱","Arcade","breakout","Destroy the bricks."],
+ ["Flappy Flight","🐦","Arcade","flappy","Fly through the gaps."],
+ ["Mini Runner","🏃","Arcade","runner","Run as far as possible."],
+ ["Space Shooter","🚀","Action","shooter","Destroy incoming enemies."],
+ ["Asteroid Dodge","☄️","Action","asteroid","Survive the asteroid field."],
+ ["Coin Collector","💰","Arcade","collector","Collect everything."],
+ ["Maze Escape","🌀","Puzzle","maze","Find the exit."],
+ ["Platform Jump","🪜","Arcade","jump","Climb higher."],
+ ["Tower Stack","🏗️","Arcade","stack","Build the tallest tower."],
+ ["Ball Bounce","⚽","Arcade","bounce","Keep the ball alive."],
+ ["Brick Breaker","🔨","Arcade","brick","Break every block."],
+ ["Mini Golf","⛳","Arcade","golf","Reach the hole."],
+ ["Pinball","🎰","Arcade","pinball","Keep your ball in play."],
+ ["Endless Road","🛣️","Action","road","Drive without crashing."],
+ ["Car Dodge","🚗","Action","car","Avoid traffic."],
+ ["Rocket Launch","🚀","Arcade","rocket","Reach the target height."],
+ ["Balloon Pop","🎈","Reflex","balloon","Pop before they escape."],
+ ["Target Shooter","🏹","Action","shoot","Hit every target."],
+ ["Survival Arena","⚔️","Action","survival","Survive every wave."],
+
+ ["Who Knows Who?","💜","Couple","choice","How well do you know each other?"],
+ ["This or That","✨","Couple","choice","Pick your favorite."],
+ ["Guess My Answer","💭","Couple","choice","Predict the answer."],
+ ["Favorite Things","💖","Couple","choice","Remember the favorites."],
+ ["Memory of Us","📸","Couple","memory","Remember your moments."],
+ ["Finish My Sentence","💬","Couple","word","Finish the thought."],
+ ["Emoji Story","🥰","Couple","emoji","Decode the story."],
+ ["Pick One","🎀","Couple","choice","Choose one."],
+ ["Random Question","💌","Couple","question","Answer honestly."],
+ ["Would You Rather","🤍","Couple","choice","Choose your side."],
+ ["Guess the Song","🎵","Couple","trivia","Guess the song."],
+ ["Guess the Movie","🎬","Couple","trivia","Guess the movie."],
+ ["Couple Trivia","💕","Couple","trivia","Test your shared knowledge."],
+ ["Secret Question","🔒","Couple","question","A new question every round."],
+ ["Truth or Dare","🎲","Couple","choice","Choose your challenge."],
+ ["Mood Picker","🌙","Couple","choice","Pick today's mood."],
+ ["Compliment Generator","💐","Couple","compliment","Create a sweet message."],
+ ["Date Idea","🌹","Couple","choice","Choose an idea."],
+ ["Future Guess","🔮","Couple","choice","Make a playful prediction."],
+ ["Compatibility","💞","Couple","compat","Build your score."],
+
+ ["Pixel Painter","🖌️","Creative","paint","Create pixel art."],
+ ["Color Mixer","🎨","Creative","color","Mix the requested color."],
+ ["Drawing Pad","✏️","Creative","draw","Draw anything."],
+ ["Logo Maker","🔷","Creative","paint","Build a tiny logo."],
+ ["Room Designer","🏠","Creative","choice","Design your room."],
+ ["Character Creator","🧑","Creative","choice","Build your character."],
+ ["Outfit Builder","👕","Creative","choice","Create an outfit."],
+ ["Sticker Maker","⭐","Creative","paint","Make a sticker."],
+ ["Music Pad","🎹","Creative","music","Play the pads."],
+ ["Beat Maker","🥁","Creative","music","Build a beat."],
+ ["Name Generator","✨","Creative","name","Generate a new identity."],
+ ["Story Builder","📖","Creative","story","Build the story."],
+ ["Pixel Challenge","🟪","Creative","paint","Copy the pattern."],
+ ["Emoji Composer","😀","Creative","emoji","Compose an emoji scene."],
+ ["Pattern Creator","🔲","Creative","pattern","Complete the pattern."],
+ ["Mini Garden","🌱","Chill","garden","Grow your garden."],
+ ["Virtual Aquarium","🐠","Chill","aquarium","Build your aquarium."],
+ ["Digital Pet","🐶","Chill","pet","Take care of your pet."],
+ ["Tiny World","🌍","Creative","world","Build a tiny world."],
+ ["Secret Game","🗝️","Chill","secret","Discover the hidden game."]
+];
+
+/* Add 10 variants per core game = 1000 */
+const variantNames=[
+ "Classic","Neon","Turbo","Zen","Chaos","Cosmic","Candy","Midnight","Pro","Ultimate"
+];
+const variantIcons=[
+ "◆","✦","⚡","◌","☄","✺","●","☾","◆","★"
+];
+
+const games=[];
+let id=1;
+
+coreGames.forEach((g,coreIndex)=>{
+  for(let v=0;v<10;v++){
+    games.push({
+      id:id++,
+      core:coreIndex,
+      name:g[0]+" • "+variantNames[v],
+      base:g[0],
+      icon:g[1],
+      variant:variantNames[v],
+      variantIcon:variantIcons[v],
+      cat:g[2],
+      type:g[3],
+      desc:g[4]
+    });
+  }
+});
+
+const KEY="PLAYBOX1000_V1";
+
+let state={
+  coins:0,
+  xp:0,
+  stars:0,
+  played:0,
+  streak:0,
+  bestOverall:0,
+  favorites:[],
+  recent:[],
+  progress:{},
+  achievements:{},
+  theme:"dark",
+  sound:true,
+  vibration:true,
+  totalWins:0,
+  totalFails:0
 };
 
-/* =========================
-   SAVE
-========================= */
+try{
+  const saved=localStorage.getItem(KEY);
+  if(saved) state={...state,...JSON.parse(saved)};
+}catch(e){}
 
 function save(){
-localStorage.setItem("playbox100",JSON.stringify(state));
-updateStats();
+  try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}
 }
 
-function updateStats(){
-document.getElementById("coins").textContent=state.coins;
-document.getElementById("stars").textContent=state.stars;
+function getProg(gameId){
+  if(!state.progress[gameId]){
+    state.progress[gameId]={
+      level:1,
+      xp:0,
+      coins:0,
+      stars:0,
+      best:0,
+      wins:0,
+      fails:0
+    };
+  }
+  return state.progress[gameId];
 }
 
-/* =========================
-   RENDER
-========================= */
-
-function renderGames(){
-const box=document.getElementById("games");
-const search=document.getElementById("search").value.toLowerCase();
-
-box.innerHTML="";
-
-games.forEach((g,i)=>{
-let name=g[0];
-let icon=g[1];
-let cat=g[2];
-
-if(currentFilter!=="All" && cat!==currentFilter)return;
-if(search && !name.toLowerCase().includes(search))return;
-
-let fav=state.favorites.includes(i);
-let high=state.highscores[i]||0;
-
-let card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-<div class="cardTop">
-<div class="icon">${icon}</div>
-<button class="fav ${fav?"on":""}" onclick="toggleFav(event,${i})">
-${fav?"♥":"♡"}
-</button>
-</div>
-
-<h4>${i+1}. ${name}</h4>
-<p>${g[3]}</p>
-
-<div class="cardBottom">
-<span class="cat">${cat}</span>
-<span class="high">🏆 ${high}</span>
-</div>
-`;
-
-card.onclick=()=>openGame(i);
-
-box.appendChild(card);
-});
-
-document.getElementById("count").textContent=
-box.children.length+" games";
+function difficulty(level){
+  if(level<5) return ["EASY",1];
+  if(level<10) return ["NORMAL",1.15];
+  if(level<20) return ["HARD",1.35];
+  if(level<35) return ["EXPERT",1.6];
+  if(level<50) return ["INSANE",1.9];
+  if(level<75) return ["MASTER",2.25];
+  return ["NIGHTMARE",2.7];
 }
 
-function toggleFav(e,i){
-e.stopPropagation();
-
-if(state.favorites.includes(i)){
-state.favorites=state.favorites.filter(x=>x!==i);
-}else{
-state.favorites.push(i);
+function variantModifier(game){
+  return 1+(game.id%10)*.035;
 }
 
-save();
-renderGames();
+function xpNeed(level){
+  return Math.floor(80+level*30+Math.pow(level,1.22)*10);
 }
 
-function filterGames(cat,btn){
-currentFilter=cat;
-
-document.querySelectorAll(".nav button").forEach(x=>{
-x.classList.remove("active");
-});
-
-btn.classList.add("active");
-renderGames();
+function totalLevel(){
+  return Object.values(state.progress)
+    .reduce((a,p)=>a+p.level-1,0);
 }
 
-/* =========================
-   GAME OPEN
-========================= */
-
-function openGame(index){
-
-clearInterval(gameTimer);
-
-currentGame=index;
-gameScore=0;
-gameData={};
-
-let g=games[index];
-
-if(!state.played.includes(index)){
-state.played.unshift(index);
-state.played=state.played.slice(0,12);
-save();
+function pctFor(p){
+  return Math.min(100,((p.xp/xpNeed(p.level))*100));
 }
 
-document.getElementById("overlay").classList.add("show");
+/* =========================================================
+   UI
+========================================================= */
 
-document.getElementById("gameTitle").textContent=
-(index+1)+". "+g[0];
+let currentFilter="All";
+let searchTerm="";
+let view="home";
 
-document.getElementById("gameCategory").textContent=g[2];
+function render(){
+  document.body.classList.toggle("light",state.theme==="light");
 
-document.getElementById("gameIcon").textContent=g[1];
-document.getElementById("introTitle").textContent=g[0];
-document.getElementById("gameDesc").textContent=g[3];
+  const app=$("#app");
 
-loadGame(g[4]);
+  if(view==="home") renderHome(app);
+  if(view==="games") renderLibrary(app);
+  if(view==="stats") renderStats(app);
+  if(view==="favorites") renderFavorites(app);
+
+  renderBottom();
+}
+
+function renderHome(app){
+  const daily=games[new Date().getDate()%games.length];
+
+  app.innerHTML=`
+    <div class="top">
+      <div class="nav">
+        <div class="logo">PLAY<span>BOX</span> <small>1000</small></div>
+        <div class="navStats">
+          <div class="stat">🪙 ${state.coins}</div>
+          <div class="stat">⭐ ${state.stars}</div>
+          <div class="stat">⚡ ${state.xp}</div>
+        </div>
+        <button class="navBtn" onclick="openSettings()">⚙️</button>
+      </div>
+    </div>
+
+    <main class="container">
+
+      <section class="hero">
+        <div style="font-size:12px;color:var(--accent2);font-weight:900;margin-bottom:12px">
+          THE ULTIMATE MINI-GAME UNIVERSE
+        </div>
+
+        <h1>1,000 games.<br>Infinite levels.</h1>
+
+        <p>
+          100 core game mechanics × 10 unique variants.
+          Every game has its own progression, difficulty curve,
+          rewards, personal records and endless levels.
+        </p>
+
+        <div class="heroBtns">
+          <button class="primary" onclick="randomGame()">🎲 Random Game</button>
+          <button class="secondary" onclick="continueGame()">▶ Continue</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sectionHead">
+          <h2>Your Progress</h2>
+          <span>${totalLevel()} levels cleared</span>
+        </div>
+
+        <div class="statsPanel">
+          <div class="bigStat">
+            <b>${state.totalWins}</b>
+            <span>Levels Cleared</span>
+          </div>
+          <div class="bigStat">
+            <b>${state.played}</b>
+            <span>Games Played</span>
+          </div>
+          <div class="bigStat">
+            <b>${state.streak}</b>
+            <span>Win Streak</span>
+          </div>
+          <div class="bigStat">
+            <b>${Object.keys(state.progress).length}/1000</b>
+            <span>Games Started</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sectionHead">
+          <h2>⚡ Daily Challenge</h2>
+          <span>Today's pick</span>
+        </div>
+
+        ${gameCard(daily)}
+      </section>
+
+      <section class="section">
+        <div class="sectionHead">
+          <h2>🔥 Continue Playing</h2>
+          <span>Your active games</span>
+        </div>
+
+        ${renderRecentCards()}
+      </section>
+
+      <section class="section">
+        <div class="sectionHead">
+          <h2>🎮 Explore</h2>
+          <span>1,000 playable games</span>
+        </div>
+
+        <div class="grid">
+          ${games.slice(0,8).map(gameCard).join("")}
+        </div>
+
+        <button class="more" onclick="go('games')">
+          Browse all 1,000 games →
+        </button>
+      </section>
+
+    </main>
+  `;
+}
+
+function renderLibrary(app){
+  let filtered=games.filter(g=>{
+    const catOk=currentFilter==="All"||g.cat===currentFilter;
+    const text=(g.name+" "+g.base+" "+g.desc).toLowerCase();
+    return catOk && text.includes(searchTerm.toLowerCase());
+  });
+
+  app.innerHTML=`
+    <div class="top">
+      <div class="nav">
+        <div class="logo">PLAY<span>BOX</span> 1000</div>
+        <div class="navStats">
+          <div class="stat">🪙 ${state.coins}</div>
+          <div class="stat">⭐ ${state.stars}</div>
+        </div>
+        <button class="navBtn" onclick="openSettings()">⚙️</button>
+      </div>
+    </div>
+
+    <main class="container">
+      <div class="sectionHead">
+        <div>
+          <h2>All Games</h2>
+          <span>${filtered.length} games found</span>
+        </div>
+      </div>
+
+      <input
+        class="search"
+        placeholder="Search 1,000 games..."
+        value="${esc(searchTerm)}"
+        oninput="searchTerm=this.value;render()"
+      >
+
+      <div class="filters">
+        ${categories.map(c=>`
+          <button
+            class="filter ${currentFilter===c?"active":""}"
+            onclick="currentFilter='${c}';render()"
+          >${c}</button>
+        `).join("")}
+      </div>
+
+      <div class="grid">
+        ${filtered.map(gameCard).join("")}
+      </div>
+
+      ${filtered.length===0?`
+        <div class="empty">
+          No games found.<br>
+          Try another search.
+        </div>
+      `:""}
+    </main>
+  `;
+}
+
+function renderStats(app){
+  const ach=[
+    ["🎮","First Step","Play your first level",state.totalWins>=1],
+    ["🔥","Getting Serious","Clear 10 levels",state.totalWins>=10],
+    ["💯","Century","Clear 100 levels",state.totalWins>=100],
+    ["🏆","Legend","Clear 500 levels",state.totalWins>=500],
+    ["🌌","Explorer","Start 50 games",Object.keys(state.progress).length>=50],
+    ["💎","Collector","Earn 1,000 coins",state.coins>=1000],
+    ["⭐","Star Hunter","Earn 100 stars",state.stars>=100],
+    ["♾️","Endless","Reach level 50 in any game",
+      Object.values(state.progress).some(p=>p.level>=50)]
+  ];
+
+  app.innerHTML=`
+    <div class="top">
+      <div class="nav">
+        <div class="logo">PLAY<span>BOX</span> 1000</div>
+        <div class="navStats">
+          <div class="stat">⭐ ${state.stars}</div>
+        </div>
+      </div>
+    </div>
+
+    <main class="container">
+      <div class="sectionHead">
+        <h2>🏆 Your Profile</h2>
+      </div>
+
+      <div class="statsPanel">
+        <div class="bigStat"><b>${state.totalWins}</b><span>Wins</span></div>
+        <div class="bigStat"><b>${state.totalFails}</b><span>Fails</span></div>
+        <div class="bigStat"><b>${state.coins}</b><span>Coins</span></div>
+        <div class="bigStat"><b>${state.stars}</b><span>Stars</span></div>
+      </div>
+
+      <section class="section">
+        <div class="sectionHead">
+          <h2>Achievements</h2>
+        </div>
+
+        ${ach.map(a=>`
+          <div class="achievement ${a[3]?"":"locked"}">
+            <b>${a[0]} ${a[1]}</b>
+            <span>${a[2]}</span>
+          </div>
+        `).join("")}
+      </section>
+    </main>
+  `;
+}
+
+function renderFavorites(app){
+  const list=games.filter(g=>state.favorites.includes(g.id));
+
+  app.innerHTML=`
+    <div class="top">
+      <div class="nav">
+        <div class="logo">PLAY<span>BOX</span></div>
+      </div>
+    </div>
+
+    <main class="container">
+      <div class="sectionHead">
+        <h2>❤️ Favorites</h2>
+        <span>${list.length} saved</span>
+      </div>
+
+      ${
+        list.length
+        ? `<div class="grid">${list.map(gameCard).join("")}</div>`
+        : `<div class="empty">
+            You haven't saved any games yet.<br><br>
+            Tap ❤️ on a game to add it here.
+          </div>`
+      }
+    </main>
+  `;
+}
+
+function renderRecentCards(){
+  const list=state.recent
+    .map(id=>games.find(g=>g.id===id))
+    .filter(Boolean)
+    .slice(0,4);
+
+  if(!list.length){
+    return `<div class="empty" style="padding:25px">
+      Start playing to build your list.
+    </div>`;
+  }
+
+  return `<div class="grid">${list.map(gameCard).join("")}</div>`;
+}
+
+function gameCard(g){
+  const p=getProg(g.id);
+  const fav=state.favorites.includes(g.id);
+  const [diff]=difficulty(p.level);
+
+  return `
+    <article class="card">
+      <div class="cardTop">
+        <div class="icon">${g.icon}</div>
+        <button class="fav ${fav?"on":""}" onclick="event.stopPropagation();toggleFav(${g.id})">
+          ${fav?"♥":"♡"}
+        </button>
+      </div>
+
+      <h3>${esc(g.name)}</h3>
+
+      <p>${esc(g.desc)}</p>
+
+      <div class="levelRow">
+        <span>LV ${p.level}</span>
+        <span>${diff}</span>
+      </div>
+
+      <div class="progress">
+        <i style="width:${pctFor(p)}%"></i>
+      </div>
+
+      <button class="play" onclick="startGame(${g.id})">
+        ${p.level>1?"▶ Continue":"▶ Play"}
+      </button>
+    </article>
+  `;
+}
+
+function renderBottom(){
+  let old=$("#bottom");
+  if(old)old.remove();
+
+  const div=document.createElement("div");
+  div.id="bottom";
+  div.className="bottom";
+
+  div.innerHTML=`
+    <div class="bottomIn">
+      <button class="${view==="home"?"active":""}" onclick="go('home')">
+        <b>⌂</b>Home
+      </button>
+      <button class="${view==="games"?"active":""}" onclick="go('games')">
+        <b>▦</b>Games
+      </button>
+      <button class="${view==="favorites"?"active":""}" onclick="go('favorites')">
+        <b>♡</b>Favorites
+      </button>
+      <button class="${view==="stats"?"active":""}" onclick="go('stats')">
+        <b>♛</b>Stats
+      </button>
+    </div>
+  `;
+
+  document.body.appendChild(div);
+}
+
+function go(v){
+  view=v;
+  render();
+  scrollTo(0,0);
+}
+
+/* =========================================================
+   GAME ENGINE
+========================================================= */
+
+let activeGame=null;
+let activeProg=null;
+let gameTimer=null;
+let animation=null;
+let gameState={};
+
+function startGame(id){
+  stopLoops();
+
+  activeGame=games.find(g=>g.id===id);
+  activeProg=getProg(id);
+
+  state.played++;
+
+  state.recent=[
+    id,
+    ...state.recent.filter(x=>x!==id)
+  ].slice(0,12);
+
+  save();
+
+  $("#overlay").classList.add("show");
+
+  $("#gameTitle").innerHTML=`
+    <strong>${activeGame.icon} ${esc(activeGame.name)}</strong>
+    <small>
+      Level ${activeProg.level} · ${difficulty(activeProg.level)[0]}
+    </small>
+  `;
+
+  renderGame();
 }
 
 function closeGame(){
-clearInterval(gameTimer);
-document.getElementById("overlay").classList.remove("show");
-renderGames();
+  stopLoops();
+  $("#overlay").classList.remove("show");
+  activeGame=null;
+  activeProg=null;
+  render();
 }
 
-function finish(score){
+function stopLoops(){
+  if(gameTimer){
+    clearTimeout(gameTimer);
+    clearInterval(gameTimer);
+    gameTimer=null;
+  }
 
-clearInterval(gameTimer);
-
-score=Math.max(0,Math.floor(score));
-
-let old=state.highscores[currentGame]||0;
-
-if(score>old){
-state.highscores[currentGame]=score;
+  if(animation){
+    cancelAnimationFrame(animation);
+    animation=null;
+  }
 }
 
-state.coins+=Math.max(1,Math.floor(score/10));
-state.stars+=score>=70?1:0;
+function renderGame(){
+  if(!activeGame)return;
 
-save();
+  const g=activeGame;
+  const p=activeProg;
+  const level=p.level;
+  const [diff,mult]=difficulty(level);
 
-document.getElementById("gameArea").innerHTML=`
-<div class="result">
-<div class="emoji">🎉</div>
-<h2>Game Complete!</h2>
-<p>Your score</p>
-<div class="big">${score}</div>
-<p>
-${score>old?"🔥 NEW HIGH SCORE!":"Keep going and beat your record!"}
-</p>
+  $("#gameTitle").innerHTML=`
+    <strong>${g.icon} ${esc(g.name)}</strong>
+    <small>Level ${level} · ${diff} · ${g.cat}</small>
+  `;
 
-<div class="row">
-<button class="primary" onclick="loadGame(games[currentGame][4])">
-PLAY AGAIN
-</button>
-<button class="secondary" onclick="closeGame()">
-BACK
-</button>
-</div>
-</div>
-`;
+  $("#gameBody").innerHTML=`
+    <div class="gameStats">
+      <div class="gstat">
+        <small>LEVEL</small><b>${level}</b>
+      </div>
+      <div class="gstat">
+        <small>SCORE</small><b id="score">0</b>
+      </div>
+      <div class="gstat">
+        <small>BEST</small><b>${p.best}</b>
+      </div>
+      <div class="gstat">
+        <small>COMBO</small><b id="combo">0</b>
+      </div>
+    </div>
+
+    <div id="gameArena" class="arena">
+      <div id="gameContent" style="width:100%;height:100%;min-height:350px"></div>
+
+      <div class="result" id="result">
+        <div class="resultBox" id="resultBox"></div>
+      </div>
+    </div>
+  `;
+
+  const fn=engines[g.type]||engines.choice;
+  fn(g,level,mult);
 }
 
-/* =========================
-   GAME LOADER
-========================= */
+/* =========================================================
+   LEVEL COMPLETION
+========================================================= */
 
-function loadGame(type){
-
-clearInterval(gameTimer);
-
-let area=document.getElementById("gameArea");
-
-switch(type){
-
-case"number": numberGame();break;
-case"higher": higherGame();break;
-case"odd": oddGame();break;
-case"math": mathGame();break;
-case"sequence": sequenceGame();break;
-case"word": wordGame();break;
-case"emoji": emojiGame();break;
-case"riddle": riddleGame();break;
-case"tf": trueFalseGame();break;
-case"trivia": triviaGame();break;
-case"choice": choiceGame();break;
-case"couple": coupleGame();break;
-case"memory": memoryGame();break;
-case"target": targetGame();break;
-case"tap": tapGame();break;
-case"timing": timingGame();break;
-case"color": colorGame();break;
-case"snake": snakeGame();break;
-case"breakout": breakoutGame();break;
-case"maze": mazeGame();break;
-case"creative": creativeGame();break;
-case"logic": logicGame();break;
-case"code": codeGame();break;
-case"sudoku": sudokuGame();break;
-case"secret": secretGame();break;
-
-default:
-choiceGame();
-}
+function setScore(n){
+  const el=$("#score");
+  if(el)el.textContent=Math.floor(n);
 }
 
-/* =========================
-   NUMBER GUESS
-========================= */
-
-function numberGame(){
-
-let secret=Math.floor(Math.random()*20)+1;
-let tries=0;
-
-gameData.secret=secret;
-
-document.getElementById("gameArea").innerHTML=`
-<div class="gstats">
-<div class="gs"><b id="tries">0</b><span>TRIES</span></div>
-<div class="gs"><b>1-20</b><span>RANGE</span></div>
-</div>
-
-<div class="center">
-<div class="big">?</div>
-
-<input id="guessInput"
-type="number"
-min="1"
-max="20"
-placeholder="Enter number"
-style="
-width:100%;
-padding:13px;
-background:#191c24;
-border:1px solid #292d39;
-border-radius:12px;
-color:white;
-outline:0;
-text-align:center;
-">
-
-<div class="row">
-<button class="startBtn" onclick="guessNumber()">GUESS</button>
-</div>
-
-<div class="msg" id="msg">I'm thinking of a number...</div>
-</div>
-`;
+function setCombo(n){
+  const el=$("#combo");
+  if(el)el.textContent=n;
 }
 
-function guessNumber(){
+function win(score=100){
+  if(!activeGame||!activeProg)return;
 
-let input=document.getElementById("guessInput");
-let n=Number(input.value);
+  stopLoops();
 
-if(!n)return;
+  score=Math.max(1,Math.floor(score));
 
-gameData.tries++;
-document.getElementById("tries").textContent=gameData.tries;
+  const level=activeProg.level;
 
-if(n===gameData.secret){
-finish(Math.max(20,100-gameData.tries*10));
-return;
+  const reward=Math.floor(
+    10+
+    level*2+
+    score/30
+  );
+
+  const starReward=
+    level%10===0?3:
+    level%5===0?2:1;
+
+  activeProg.best=Math.max(activeProg.best,score);
+  activeProg.wins++;
+  activeProg.xp+=score;
+  activeProg.coins+=reward;
+  activeProg.stars+=starReward;
+
+  state.xp+=score;
+  state.coins+=reward;
+  state.stars+=starReward;
+  state.totalWins++;
+  state.streak++;
+  state.bestOverall=Math.max(state.bestOverall,score);
+
+  save();
+
+  confetti();
+
+  const next=level+1;
+  const nextDiff=difficulty(next)[0];
+
+  $("#result").classList.add("show");
+
+  $("#resultBox").innerHTML=`
+    <div style="font-size:55px">🏆</div>
+
+    <h2>LEVEL CLEARED!</h2>
+
+    <p>
+      ${esc(activeGame.name)} · Level ${level}
+    </p>
+
+    <div class="statsPanel" style="margin-top:14px">
+      <div class="bigStat">
+        <b>+${score}</b><span>Score</span>
+      </div>
+      <div class="bigStat">
+        <b>+${reward}</b><span>Coins</span>
+      </div>
+      <div class="bigStat">
+        <b>+${starReward}</b><span>Stars</span>
+      </div>
+      <div class="bigStat">
+        <b>LV ${next}</b><span>${nextDiff}</span>
+      </div>
+    </div>
+
+    ${
+      level%10===0
+      ? `<div style="margin-top:15px;color:var(--gold);font-weight:900">
+          👑 BOSS CHECKPOINT CLEARED
+        </div>`
+      :""
+    }
+
+    <div class="resultBtns">
+      <button class="secondary" onclick="closeGame()">Exit</button>
+      <button class="primary" onclick="nextLevel()">NEXT LEVEL →</button>
+    </div>
+  `;
+
+  setTimeout(()=>{
+    if($("#result")?.classList.contains("show")){
+      nextLevel();
+    }
+  },2200);
 }
 
-document.getElementById("msg").textContent=
-n<gameData.secret?"⬆️ Higher!":"⬇️ Lower!";
+function fail(reason="Not quite!"){
+  if(!activeGame||!activeProg)return;
 
-input.value="";
+  stopLoops();
+
+  activeProg.fails++;
+  state.totalFails++;
+  state.streak=0;
+
+  save();
+
+  $("#result").classList.add("show");
+
+  $("#resultBox").innerHTML=`
+    <div style="font-size:55px">💥</div>
+
+    <h2>TRY AGAIN</h2>
+
+    <p>${esc(reason)}</p>
+
+    <div class="bigStat">
+      <b>LEVEL ${activeProg.level}</b>
+      <span>Your progress is safe</span>
+    </div>
+
+    <div class="resultBtns">
+      <button class="secondary" onclick="closeGame()">Exit</button>
+      <button class="primary" onclick="renderGame()">RETRY LEVEL</button>
+    </div>
+  `;
 }
 
-/* =========================
-   HIGHER LOWER
-========================= */
+function nextLevel(){
+  if(!activeProg)return;
 
-function higherGame(){
+  activeProg.level++;
+  activeProg.xp=0;
 
-let current=Math.floor(Math.random()*90)+10;
-gameData.current=current;
-gameData.score=0;
-gameData.round=0;
+  save();
 
-drawHigher();
+  renderGame();
 }
 
-function drawHigher(){
+/* =========================================================
+   GENERIC HELPERS
+========================================================= */
 
-let n=gameData.current;
-
-document.getElementById("gameArea").innerHTML=`
-<div class="gstats">
-<div class="gs"><b>${gameData.score}</b><span>SCORE</span></div>
-<div class="gs"><b>${gameData.round}/8</b><span>ROUND</span></div>
-</div>
-
-<div class="center">
-<p>Will the next number be higher or lower than</p>
-<div class="big">${n}</div>
-
-<div class="row">
-<button class="primary" onclick="higherAnswer('higher')">⬆️ HIGHER</button>
-<button class="secondary" onclick="higherAnswer('lower')">⬇️ LOWER</button>
-</div>
-</div>
-`;
+function rand(min,max){
+  return Math.floor(Math.random()*(max-min+1))+min;
 }
 
-function higherAnswer(ans){
-
-let next=Math.floor(Math.random()*90)+10;
-
-let correct=
-ans==="higher"?next>gameData.current:next<gameData.current;
-
-if(correct)gameData.score+=15;
-
-gameData.round++;
-gameData.current=next;
-
-if(gameData.round>=8){
-finish(gameData.score);
-}else{
-drawHigher();
-}
+function shuffle(a){
+  return [...a].sort(()=>Math.random()-.5);
 }
 
-/* =========================
-   QUICK MATH
-========================= */
-
-function mathGame(){
-
-let a=Math.floor(Math.random()*20)+1;
-let b=Math.floor(Math.random()*20)+1;
-let ops=["+","-","×"];
-let op=ops[Math.floor(Math.random()*ops.length)];
-
-let answer=
-op==="+"?a+b:
-op==="-"?a-b:
-a*b;
-
-let choices=[answer];
-
-while(choices.length<4){
-let x=answer+Math.floor(Math.random()*15)-7;
-if(!choices.includes(x))choices.push(x);
+function randomItem(a){
+  return a[Math.floor(Math.random()*a.length)];
 }
 
-choices.sort(()=>Math.random()-.5);
-
-gameData.answer=answer;
-gameData.score=0;
-
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<p>Solve this:</p>
-<div class="big">${a} ${op} ${b}</div>
-
-<div class="answers">
-${choices.map(x=>`
-<button class="answer" onclick="mathAnswer(this,${x})">${x}</button>
-`).join("")}
-</div>
-
-<div class="msg" id="msg"></div>
-</div>
-`;
+function successTap(el,fn){
+  el.addEventListener("pointerdown",e=>{
+    e.preventDefault();
+    fn(e);
+  });
 }
 
-function mathAnswer(btn,x){
-
-if(x===gameData.answer){
-btn.classList.add("correct");
-finish(100);
-}else{
-btn.classList.add("wrong");
-document.getElementById("msg").textContent="❌ Try again!";
-setTimeout(mathGame,500);
-}
+function basicCenter(html){
+  $("#gameContent").innerHTML=`
+    <div class="centerGame">
+      <div>${html}</div>
+    </div>
+  `;
 }
 
-/* =========================
-   ODD ONE OUT
-========================= */
-
-function oddGame(){
-
-let emojis=["🐶","🐶","🐶","🐱"];
-emojis.sort(()=>Math.random()-.5);
-
-gameData.answer=emojis.indexOf("🐱");
-
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<p>Find the different one.</p>
-
-<div class="answers">
-${emojis.map((e,i)=>`
-<button class="answer" onclick="oddAnswer(${i})"
-style="font-size:30px">${e}</button>
-`).join("")}
-</div>
-
-<div class="msg" id="msg"></div>
-</div>
-`;
+function resultMessage(text){
+  const m=document.createElement("div");
+  m.className="message";
+  m.textContent=text;
+  $("#gameContent").appendChild(m);
 }
 
-function oddAnswer(i){
-if(i===gameData.answer)finish(100);
-else{
-document.getElementById("msg").textContent="❌ Nope!";
-}
-}
-
-/* =========================
-   SEQUENCE
-========================= */
-
-function sequenceGame(){
-
-let start=Math.floor(Math.random()*10)+1;
-let step=Math.floor(Math.random()*5)+2;
-
-let arr=[
-start,
-start+step,
-start+step*2,
-start+step*3
-];
-
-let answer=start+step*4;
-
-let choices=[
-answer,
-answer+step,
-answer-step,
-answer+3
-].sort(()=>Math.random()-.5);
-
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<p>What's next?</p>
-<div class="big" style="font-size:30px">${arr.join("  •  ")}  •  ?</div>
-
-<div class="answers">
-${choices.map(x=>`
-<button class="answer" onclick="sequenceAnswer(this,${x},${answer})">${x}</button>
-`).join("")}
-</div>
-</div>
-`;
-}
-
-function sequenceAnswer(btn,x,a){
-if(x===a){
-btn.classList.add("correct");
-finish(100);
-}else{
-btn.classList.add("wrong");
-}
-}
-
-/* =========================
-   WORD
-========================= */
-
-function wordGame(){
-
-let words=["LOVE","SMILE","DREAM","HAPPY","HEART","SWEET","CUTE","FOREVER"];
-let word=words[Math.floor(Math.random()*words.length)];
-
-let scrambled=word.split("").sort(()=>Math.random()-.5).join("");
-
-gameData.word=word;
-
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<p>Unscramble the word:</p>
-<div class="big" style="font-size:38px">${scrambled}</div>
-
-<input id="wordInput"
-placeholder="Your answer"
-style="
-width:100%;
-padding:13px;
-background:#191c24;
-border:1px solid #292d39;
-border-radius:12px;
-color:white;
-outline:0;
-text-align:center;
-text-transform:uppercase">
-
-<div class="row">
-<button class="startBtn" onclick="checkWord()">CHECK</button>
-</div>
-
-<div class="msg" id="msg"></div>
-</div>
-`;
-}
-
-function checkWord(){
-
-let v=document.getElementById("wordInput").value.toUpperCase().trim();
-
-if(v===gameData.word){
-finish(100);
-}else{
-document.getElementById("msg").textContent="❌ Try again!";
-}
-}
-
-/* =========================
+/* =========================================================
    MEMORY
-========================= */
+========================================================= */
 
-function memoryGame(){
+function memoryGame(g,level,mult){
+  const pairs=Math.min(12,2+Math.floor(level/2));
+  const symbols=["🍎","🍋","🍒","🍇","🍉","🥝","🍑","🥥","🌸","⭐","🔥","💎"];
 
-let icons=["🍎","🍌","🍇","🍓"];
-let arr=[...icons,...icons].sort(()=>Math.random()-.5);
+  let cards=shuffle(symbols.slice(0,pairs).flatMap(x=>[x,x]));
+  let open=[];
+  let matched=0;
+  let locked=false;
 
-gameData.cards=arr;
-gameData.open=[];
-gameData.matches=0;
+  $("#gameContent").innerHTML=`
+    <div style="
+      display:grid;
+      grid-template-columns:repeat(${pairs>8?4:4},1fr);
+      gap:8px;
+      max-width:520px;
+      margin:auto
+    " id="memoryGrid"></div>
+  `;
 
-document.getElementById("gameArea").innerHTML=`
-<div class="gstats">
-<div class="gs"><b id="matches">0</b><span>MATCHES</span></div>
-<div class="gs"><b>4</b><span>PAIRS</span></div>
-</div>
+  const grid=$("#memoryGrid");
 
-<div class="memory" id="memory"></div>
-`;
+  cards.forEach((symbol,i)=>{
+    const b=document.createElement("button");
+    b.className="option";
+    b.style.minHeight="65px";
+    b.textContent="？";
 
-renderMemory();
+    successTap(b,()=>{
+      if(locked||b.dataset.done==="1"||open.includes(i))return;
+
+      b.textContent=symbol;
+      open.push(i);
+
+      if(open.length===2){
+        locked=true;
+
+        const a=grid.children[open[0]];
+        const c=grid.children[open[1]];
+
+        if(cards[open[0]]===cards[open[1]]){
+          a.dataset.done="1";
+          c.dataset.done="1";
+          matched++;
+          open=[];
+          locked=false;
+
+          setScore(matched*100*mult);
+          setCombo(matched);
+
+          if(matched===pairs){
+            win(matched*100*mult);
+          }
+        }else{
+          setTimeout(()=>{
+            a.textContent="？";
+            c.textContent="？";
+            open=[];
+            locked=false;
+          },550);
+        }
+      }
+    });
+
+    grid.appendChild(b);
+  });
 }
 
-function renderMemory(){
+/* =========================================================
+   MATH
+========================================================= */
 
-let box=document.getElementById("memory");
+function mathGame(g,level,mult){
+  const max=Math.min(999,8+level*5);
+  let a=rand(2,max);
+  let b=rand(1,max);
 
-box.innerHTML=gameData.cards.map((x,i)=>{
+  const ops=
+    level<5?["+","-"]:
+    level<15?["+","-","×"]:
+    ["+","-","×","÷"];
 
-let opened=
-gameData.open.includes(i)||
-gameData.matched?.includes(i);
+  let op=randomItem(ops);
+  let answer;
 
-return`
-<button class="mem" onclick="memoryClick(${i})">
-${opened?x:"?"}
-</button>
-`;
+  if(op==="+")answer=a+b;
+  if(op==="-"){
+    if(b>a)[a,b]=[b,a];
+    answer=a-b;
+  }
+  if(op==="×")answer=a*b;
+  if(op==="÷"){
+    b=rand(2,Math.max(2,Math.floor(max/4)));
+    answer=rand(2,Math.max(2,Math.floor(max/5)));
+    a=b*answer;
+  }
 
-}).join("");
+  const options=shuffle([
+    answer,
+    answer+rand(1,Math.max(2,level+2)),
+    answer-rand(1,Math.max(2,level+2)),
+    answer+rand(2,Math.max(3,level+5))
+  ]);
+
+  basicCenter(`
+    <div class="gamePrompt">${a} ${op} ${b} = ?</div>
+    <div class="sub">Solve it. Difficulty increases every level.</div>
+
+    <div class="options">
+      ${options.map(x=>`
+        <button class="option" onclick="mathAnswer(${x},${answer},${level},${mult})">
+          ${x}
+        </button>
+      `).join("")}
+    </div>
+  `);
 }
 
-function memoryClick(i){
+window.mathAnswer=function(x,a,level,mult){
+  if(x===a)win(Math.floor((100+level*8)*mult));
+  else fail("Wrong answer.");
+};
 
-if(gameData.open.includes(i)||
-gameData.matched?.includes(i))return;
-
-gameData.open.push(i);
-renderMemory();
-
-if(gameData.open.length===2){
-
-let[a,b]=gameData.open;
-
-if(gameData.cards[a]===gameData.cards[b]){
-
-if(!gameData.matched)gameData.matched=[];
-
-gameData.matched.push(a,b);
-gameData.matches++;
-
-document.getElementById("matches").textContent=gameData.matches;
-
-gameData.open=[];
-
-if(gameData.matches===4){
-setTimeout(()=>finish(100),300);
-}else{
-renderMemory();
-}
-
-}else{
-
-setTimeout(()=>{
-gameData.open=[];
-renderMemory();
-},650);
-
-}
-
-}
-}
-
-/* =========================
+/* =========================================================
    TARGET
-========================= */
+========================================================= */
 
-function targetGame(){
+function targetGame(g,level,mult){
+  const arena=$("#gameContent");
 
-gameData.score=0;
-gameData.time=15;
+  arena.style.position="relative";
+  arena.style.minHeight="350px";
 
-document.getElementById("gameArea").innerHTML=`
-<div class="gstats">
-<div class="gs"><b id="targetScore">0</b><span>SCORE</span></div>
-<div class="gs"><b id="targetTime">15</b><span>SECONDS</span></div>
-</div>
+  const rounds=Math.min(15,3+Math.floor(level/3));
+  let hit=0;
+  let score=0;
+  let size=Math.max(28,75-level*1.3);
 
-<div class="targetArea" id="targetArea"></div>
-`;
+  function spawn(){
+    arena.innerHTML="";
 
-spawnTarget();
+    const target=document.createElement("button");
+    target.textContent=g.variantIcon;
+    target.style.position="absolute";
+    target.style.width=size+"px";
+    target.style.height=size+"px";
+    target.style.borderRadius="50%";
+    target.style.background="linear-gradient(135deg,#7c5cff,#20d9ff)";
+    target.style.boxShadow="0 0 30px rgba(124,92,255,.45)";
+    target.style.left=rand(5,90)+"%";
+    target.style.top=rand(5,85)+"%";
+    target.style.fontSize=Math.max(12,size/2)+"px";
 
-gameTimer=setInterval(()=>{
+    successTap(target,()=>{
+      hit++;
+      score+=Math.floor(100*mult+(100-level));
+      setScore(score);
+      setCombo(hit);
 
-gameData.time--;
-document.getElementById("targetTime").textContent=gameData.time;
+      if(hit>=rounds){
+        win(score);
+      }else{
+        spawn();
+      }
+    });
 
-if(gameData.time<=0){
-finish(gameData.score);
+    arena.appendChild(target);
+  }
+
+  spawn();
 }
 
-},1000);
+/* =========================================================
+   REACTION
+========================================================= */
+
+function reactionGame(g,level,mult){
+  let ready=false;
+  let start=0;
+  let wait=Math.max(600,rand(1000,2300)-level*12);
+
+  basicCenter(`
+    <div class="bigEmoji">⚡</div>
+    <div class="gamePrompt">WAIT...</div>
+    <div class="sub">Tap only when the screen says GO.</div>
+    <button id="reactionBtn" class="bigAction">WAIT</button>
+  `);
+
+  const btn=$("#reactionBtn");
+
+  successTap(btn,()=>{
+    if(!ready){
+      fail("Too early!");
+      return;
+    }
+
+    const time=performance.now()-start;
+    const score=Math.max(20,Math.floor(1000-time));
+    win(score*mult);
+  });
+
+  gameTimer=setTimeout(()=>{
+    ready=true;
+    start=performance.now();
+    btn.textContent="GO!";
+    btn.style.background="linear-gradient(135deg,#35e39a,#20d9ff)";
+  },wait);
 }
 
-function spawnTarget(){
+/* =========================================================
+   GUESS NUMBER
+========================================================= */
 
-let area=document.getElementById("targetArea");
+function guessGame(g,level,mult){
+  const max=Math.min(999,10+level*7);
+  const answer=rand(1,max);
+  let attempts=Math.max(3,7-Math.floor(level/10));
 
-let t=document.createElement("button");
-t.className="target";
+  basicCenter(`
+    <div class="bigEmoji">🔢</div>
+    <div class="gamePrompt">Guess 1–${max}</div>
+    <div class="sub">Attempts left: <b id="attempts">${attempts}</b></div>
 
-let maxX=area.clientWidth-50;
-let maxY=area.clientHeight-50;
+    <div class="inputRow">
+      <input id="guessInput" type="number" inputmode="numeric">
+      <button class="primary" id="guessBtn">Guess</button>
+    </div>
 
-t.style.left=Math.random()*maxX+"px";
-t.style.top=Math.random()*maxY+"px";
+    <div class="message" id="guessMessage"></div>
+  `);
 
-t.onclick=()=>{
-gameData.score+=10;
-document.getElementById("targetScore").textContent=gameData.score;
-t.remove();
-spawnTarget();
-};
+  $("#guessBtn").onclick=()=>{
+    const val=Number($("#guessInput").value);
 
-area.appendChild(t);
+    if(!val)return;
+
+    attempts--;
+    $("#attempts").textContent=attempts;
+
+    if(val===answer){
+      win(Math.floor((250+attempts*40)*mult));
+    }else if(attempts<=0){
+      fail("The number was "+answer+".");
+    }else{
+      $("#guessMessage").textContent=
+        val<answer?"Too low ↑":"Too high ↓";
+    }
+  };
 }
 
-/* =========================
-   TAP
-========================= */
+/* =========================================================
+   HIGHER LOWER
+========================================================= */
 
-function tapGame(){
+function higherGame(g,level,mult){
+  let current=rand(1,20+level*2);
+  let score=0;
+  let rounds=Math.min(10,3+Math.floor(level/3));
 
-gameData.score=0;
-gameData.time=10;
+  function draw(){
+    const next=rand(1,20+level*2);
 
-document.getElementById("gameArea").innerHTML=`
-<div class="gstats">
-<div class="gs"><b id="tapScore">0</b><span>TAPS</span></div>
-<div class="gs"><b id="tapTime">10</b><span>SECONDS</span></div>
-</div>
+    basicCenter(`
+      <div class="bigEmoji">📈</div>
+      <div class="gamePrompt">${current}</div>
+      <div class="sub">Will the next number be higher or lower?</div>
 
-<div class="center">
-<button class="tapButton" onclick="tap()">TAP!</button>
-<p id="tapMsg" style="color:#777d8e;font-size:10px">
-Tap as fast as you can!
-</p>
-</div>
-`;
+      <div class="options">
+        <button class="option" id="higher">⬆ Higher</button>
+        <button class="option" id="lower">⬇ Lower</button>
+      </div>
 
-gameTimer=setInterval(()=>{
+      <div class="message">Round ${score/100+1}/${rounds}</div>
+    `);
 
-gameData.time--;
+    $("#higher").onclick=()=>choose("higher",next);
+    $("#lower").onclick=()=>choose("lower",next);
 
-document.getElementById("tapTime").textContent=gameData.time;
+    function choose(choice,n){
+      const correct=
+        n===current
+        ?Math.random()>.5
+        :(choice==="higher"?n>current:n<current);
 
-if(gameData.time<=0){
-finish(gameData.score);
+      if(!correct){
+        fail("Wrong prediction.");
+        return;
+      }
+
+      current=n;
+      score+=Math.floor(100*mult);
+      setScore(score);
+      setCombo(score/100);
+
+      if(score/100>=rounds)win(score);
+      else draw();
+    }
+  }
+
+  draw();
 }
 
-},1000);
+/* =========================================================
+   SEQUENCE
+========================================================= */
+
+function sequenceGame(g,level,mult){
+  const len=Math.min(9,3+Math.floor(level/3));
+  const seq=[];
+  for(let i=0;i<len;i++)seq.push(rand(1,9));
+
+  let index=0;
+
+  basicCenter(`
+    <div class="bigEmoji">🧩</div>
+    <div class="gamePrompt" id="seqText">${seq.join(" ")}</div>
+    <div class="sub">Memorize it...</div>
+  `);
+
+  setTimeout(()=>{
+    basicCenter(`
+      <div class="bigEmoji">🧠</div>
+      <div class="gamePrompt">Repeat the sequence</div>
+
+      <div class="inputRow">
+        <input id="seqInput"
+               inputmode="numeric"
+               placeholder="e.g. ${seq.join("")}">
+        <button class="primary" id="seqBtn">Check</button>
+      </div>
+    `);
+
+    $("#seqBtn").onclick=()=>{
+      const value=$("#seqInput").value.replace(/\D/g,"");
+
+      if(value===seq.join("")){
+        win(Math.floor((150+len*70)*mult));
+      }else{
+        fail("Sequence was "+seq.join(" "));
+      }
+    };
+  },Math.max(900,2200-level*25));
 }
 
-function tap(){
+/* =========================================================
+   WORD GAME
+========================================================= */
 
-gameData.score++;
-document.getElementById("tapScore").textContent=gameData.score;
-
-if(navigator.vibrate && state.vibration){
-navigator.vibrate(8);
-}
-}
-
-/* =========================
-   TIMING
-========================= */
-
-function timingGame(){
-
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<p>Stop the timer as close to 1.00 second as possible.</p>
-
-<div class="big" id="timingNumber">0.00</div>
-
-<button class="startBtn" id="timingBtn" onclick="timingStart()">
-START
-</button>
-</div>
-`;
-}
-
-function timingStart(){
-
-let start=performance.now();
-
-document.getElementById("timingBtn").textContent="STOP";
-
-document.getElementById("timingBtn").onclick=()=>{
-
-let seconds=(performance.now()-start)/1000;
-let diff=Math.abs(seconds-1);
-
-let score=Math.max(0,100-Math.floor(diff*100));
-
-finish(score);
-
-};
-
-gameTimer=setInterval(()=>{
-let now=(performance.now()-start)/1000;
-document.getElementById("timingNumber").textContent=now.toFixed(2);
-},20);
-}
-
-/* =========================
-   COLOR
-========================= */
-
-function colorGame(){
-
-let colors=[
-["RED","red"],
-["BLUE","blue"],
-["GREEN","green"],
-["YELLOW","yellow"]
+const words=[
+ "LOVE","SMILE","DREAM","HAPPY","HEART","SUNSET",
+ "FLOWER","COOKIE","MUSIC","MOON","OCEAN","STAR",
+ "FRIEND","SECRET","MAGIC","CANDY","SUMMER","CLOUD",
+ "BUBBLE","RAINBOW","FOREVER","TOGETHER","ADVENTURE"
 ];
 
-let correct=colors[Math.floor(Math.random()*colors.length)];
+function wordGame(g,level,mult){
+  let word=randomItem(words);
+  let scrambled=shuffle(word.split("")).join("");
 
-let shuffled=[...colors].sort(()=>Math.random()-.5);
+  if(scrambled===word)
+    scrambled=shuffle(word.split("")).join("");
 
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<p>Tap the word:</p>
-<div class="big" style="font-size:34px">${correct[0]}</div>
+  basicCenter(`
+    <div class="bigEmoji">🔤</div>
+    <div class="gamePrompt">${scrambled}</div>
+    <div class="sub">Unscramble the word.</div>
 
-<div class="answers">
-${shuffled.map(c=>`
-<button class="answer" onclick="colorAnswer('${c[0]}','${correct[0]}')">
-${c[0]}
-</button>
-`).join("")}
-</div>
-</div>
-`;
+    <div class="inputRow">
+      <input id="wordInput" autocomplete="off">
+      <button class="primary" id="wordBtn">Submit</button>
+    </div>
+  `);
+
+  $("#wordBtn").onclick=()=>{
+    if($("#wordInput").value.trim().toUpperCase()===word){
+      win(Math.floor((180+level*10)*mult));
+    }else{
+      fail("The word was "+word+".");
+    }
+  };
 }
 
-function colorAnswer(x,a){
-if(x===a)finish(100);
+/* =========================================================
+   COLOR TAP
+========================================================= */
+
+function colorGame(g,level,mult){
+  const colors=[
+    ["RED","#ff496f"],
+    ["BLUE","#419cff"],
+    ["GREEN","#35e39a"],
+    ["YELLOW","#ffd45c"]
+  ];
+
+  const target=randomItem(colors);
+
+  basicCenter(`
+    <div class="bigEmoji">🎨</div>
+    <div class="gamePrompt">Tap ${target[0]}</div>
+    <div class="sub">Do it before your timer runs out.</div>
+
+    <div class="options">
+      ${colors.map(c=>`
+        <button
+          class="option"
+          style="background:${c[1]};color:#111"
+          onclick="colorAnswer('${c[0]}','${target[0]}',${level},${mult})">
+          ${c[0]}
+        </button>
+      `).join("")}
+    </div>
+  `);
+
+  let time=Math.max(900,2500-level*25);
+
+  gameTimer=setTimeout(()=>{
+    fail("Too slow.");
+  },time);
 }
 
-/* =========================
+window.colorAnswer=function(x,a,level,mult){
+  if(x===a)win(Math.floor((160+level*8)*mult));
+  else fail("Wrong color.");
+};
+
+/* =========================================================
+   ODD ONE OUT
+========================================================= */
+
+function oddGame(g,level,mult){
+  const normal=["🍎","🍎","🍎","🍎"];
+  const odd=randomItem(["🍊","🍋","🍏","🍒","🍐"]);
+
+  const arr=shuffle([
+    ...normal,
+    odd
+  ]);
+
+  basicCenter(`
+    <div class="gamePrompt">Find the odd one</div>
+    <div class="sub">Level ${level} gets trickier.</div>
+
+    <div class="options">
+      ${arr.map((x,i)=>`
+        <button class="option"
+          onclick="oddAnswer('${x}','${odd}',${level},${mult})">
+          ${x}
+        </button>
+      `).join("")}
+    </div>
+  `);
+}
+
+window.oddAnswer=function(x,a,level,mult){
+  if(x===a)win(Math.floor((130+level*7)*mult));
+  else fail("That's not the odd one.");
+};
+
+/* =========================================================
+   TIMING
+========================================================= */
+
+function timingGame(g,level,mult){
+  basicCenter(`
+    <div class="bigEmoji">🎯</div>
+    <div class="gamePrompt">Stop in the green zone</div>
+    <div class="sub">The bar gets faster every level.</div>
+
+    <div style="
+      position:relative;
+      height:55px;
+      background:var(--panel2);
+      border-radius:15px;
+      overflow:hidden;
+      border:1px solid var(--line)
+    ">
+      <div id="timingBar" style="
+        position:absolute;
+        top:0;
+        bottom:0;
+        width:20%;
+        background:linear-gradient(90deg,#ff5577,#35e39a,#ff5577);
+      "></div>
+    </div>
+
+    <button class="primary" id="stopTiming"
+      style="margin-top:18px;width:100%">
+      STOP
+    </button>
+  `);
+
+  const bar=$("#timingBar");
+  let pos=0;
+  let dir=1;
+  const speed=.5+level*.025;
+
+  function loop(){
+    pos+=dir*speed;
+
+    if(pos>80){
+      pos=80;
+      dir=-1;
+    }
+
+    if(pos<0){
+      pos=0;
+      dir=1;
+    }
+
+    bar.style.left=pos+"%";
+    animation=requestAnimationFrame(loop);
+  }
+
+  loop();
+
+  $("#stopTiming").onclick=()=>{
+    cancelAnimationFrame(animation);
+
+    const center=40;
+    const error=Math.abs(pos-center);
+
+    if(error<8){
+      win(Math.floor((400-error*20)*mult));
+    }else{
+      fail("Missed the perfect zone.");
+    }
+  };
+}
+
+/* =========================================================
    CHOICE / COUPLE
-========================= */
+========================================================= */
 
 const coupleQuestions=[
-["What's your ideal date?","🌅 Sunset","🎬 Movie"],
-["Which one sounds better?","🍕 Pizza night","🍜 Food trip"],
-["Pick a weekend.","🏖️ Beach","🏠 Stay home"],
-["Choose a vibe.","🌙 Night drive","☀️ Morning date"],
-["Which would you choose?","🎁 Surprise","💌 Love letter"],
-["What's more romantic?","🌹 Flowers","🍫 Chocolates"],
-["Pick a memory.","📸 Photos","🎥 Videos"],
-["Which sounds fun?","🎮 Gaming","🎤 Karaoke"]
+ ["Choose one for tonight.","🌙 Stay in","🌆 Go out"],
+ ["Best kind of date?","🍿 Movie","🌹 Dinner"],
+ ["Perfect weekend?","🏖️ Adventure","🛋️ Chill"],
+ ["Pick a vibe.","✨ Cute","🔥 Chaotic"],
+ ["What wins?","🍕 Food","🎵 Music"],
+ ["Ideal surprise?","💐 Flowers","🎁 Gift"],
+ ["Favorite moment?","🌅 Sunset","🌃 Night"],
+ ["Choose a trip.","🏝️ Beach","🏔️ Mountains"]
 ];
 
-function choiceGame(){
+function choiceGame(g,level,mult){
+  const q=randomItem(coupleQuestions);
 
-let q=coupleQuestions[Math.floor(Math.random()*coupleQuestions.length)];
+  basicCenter(`
+    <div class="bigEmoji">💜</div>
+    <div class="gamePrompt">${q[0]}</div>
+    <div class="sub">There is no wrong answer.</div>
 
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<div style="font-size:38px;margin:10px">💜</div>
-<p style="font-size:13px;color:white">${q[0]}</p>
-
-<div class="row">
-<button class="primary" onclick="choiceResult('${q[1]}')">${q[1]}</button>
-<button class="secondary" onclick="choiceResult('${q[2]}')">${q[2]}</button>
-</div>
-
-<div class="msg" id="msg"></div>
-</div>
-`;
+    <div class="options">
+      <button class="option" onclick="choiceWin(${level},${mult})">${q[1]}</button>
+      <button class="option" onclick="choiceWin(${level},${mult})">${q[2]}</button>
+    </div>
+  `);
 }
 
-function choiceResult(answer){
+window.choiceWin=function(level,mult){
+  win(Math.floor((100+level*12)*mult));
+};
 
-document.getElementById("gameArea").innerHTML=`
-<div class="result">
-<div class="emoji">💜</div>
-<h2>${answer}</h2>
-<p>Good choice. Now ask your person what they would choose.</p>
-
-<button class="startBtn" onclick="choiceGame()">ANOTHER QUESTION</button>
-</div>
-`;
-}
-
-function coupleGame(){
-choiceGame();
-}
-
-/* =========================
+/* =========================================================
    TRIVIA
-========================= */
+========================================================= */
 
-function triviaGame(){
-
-let qs=[
-["What planet is known as the Red Planet?","Mars",["Venus","Mars","Jupiter","Mercury"]],
-["How many days are in a week?","7",["5","6","7","8"]],
-["What is H2O?","Water",["Oxygen","Water","Hydrogen","Salt"]],
-["Which animal is known as man's best friend?","Dog",["Cat","Dog","Horse","Bird"]]
+const trivia=[
+ ["What planet is known as the Red Planet?","Mars"],
+ ["How many days are in a week?","7"],
+ ["What is H2O commonly called?","Water"],
+ ["What color do you get by mixing blue and yellow?","Green"],
+ ["How many sides does a triangle have?","3"],
+ ["What is the largest ocean?","Pacific"],
+ ["Which animal is known as man's best friend?","Dog"],
+ ["How many months are in a year?","12"],
+ ["What star is closest to Earth?","Sun"],
+ ["What do bees make?","Honey"]
 ];
 
-let q=qs[Math.floor(Math.random()*qs.length)];
+function triviaGame(g,level,mult){
+  const q=randomItem(trivia);
+  const wrong=randomItem(trivia.filter(x=>x[1]!==q[1]))[1];
 
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<p>${q[0]}</p>
-<div class="answers">
-${q[2].map(x=>`
-<button class="answer" onclick="triviaAnswer(this,'${x}','${q[1]}')">${x}</button>
-`).join("")}
-</div>
-</div>
-`;
+  const opts=shuffle([q[1],wrong]);
+
+  basicCenter(`
+    <div class="bigEmoji">🌎</div>
+    <div class="gamePrompt">${q[0]}</div>
+
+    <div class="options">
+      ${opts.map(x=>`
+        <button class="option"
+          onclick="triviaAnswer('${esc(x)}','${esc(q[1])}',${level},${mult})">
+          ${x}
+        </button>
+      `).join("")}
+    </div>
+  `);
 }
 
-function triviaAnswer(btn,x,a){
+window.triviaAnswer=function(x,a,level,mult){
+  if(x===a)win(Math.floor((130+level*10)*mult));
+  else fail("Correct answer: "+a);
+};
 
-if(x===a){
-btn.classList.add("correct");
-setTimeout(()=>finish(100),250);
-}else{
-btn.classList.add("wrong");
-}
-}
+/* =========================================================
+   CANVAS ACTION GAMES
+========================================================= */
 
-/* =========================
-   RIDDLE
-========================= */
+function canvasGame(g,level,mult,mode){
+  const content=$("#gameContent");
 
-function riddleGame(){
+  content.innerHTML=`
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    <div class="message" id="canvasMsg">
+      Touch / drag to control.
+    </div>
+  `;
 
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<div style="font-size:35px">🧩</div>
-<p style="font-size:13px;color:white">
-I have hands but cannot clap. What am I?
-</p>
+  const canvas=$("#gameCanvas");
+  const ctx=canvas.getContext("2d");
 
-<div class="answers">
-<button class="answer" onclick="riddleAnswer('clock')">Clock</button>
-<button class="answer" onclick="riddleAnswer('dog')">Dog</button>
-<button class="answer" onclick="riddleAnswer('phone')">Phone</button>
-<button class="answer" onclick="riddleAnswer('tree')">Tree</button>
-</div>
-</div>
-`;
-}
+  let W=800,H=500;
+  let running=true;
+  let score=0;
+  let player={
+    x:W/2,
+    y:H-55,
+    r:18
+  };
 
-function riddleAnswer(x){
-if(x==="clock")finish(100);
-}
+  let objects=[];
+  let last=performance.now();
+  let elapsed=0;
 
-/* =========================
-   TRUE FALSE
-========================= */
+  const speed=1.5+level*.045;
+  const spawnRate=Math.max(230,900-level*8);
 
-function trueFalseGame(){
+  function resize(){
+    const rect=canvas.getBoundingClientRect();
+    canvas.width=800;
+    canvas.height=500;
+  }
 
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<p style="font-size:14px;color:white">
-The sun is a star.
-</p>
+  resize();
 
-<div class="row">
-<button class="primary" onclick="tfAnswer(true)">TRUE</button>
-<button class="secondary" onclick="tfAnswer(false)">FALSE</button>
-</div>
-</div>
-`;
-}
+  function pointer(e){
+    const r=canvas.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width*W;
+    const y=(e.clientY-r.top)/r.height*H;
 
-function tfAnswer(x){
-if(x)finish(100);
-else finish(0);
-}
+    player.x=Math.max(20,Math.min(W-20,x));
+    player.y=Math.max(20,Math.min(H-20,y));
+  }
 
-/* =========================
-   GENERIC ARCADE
-========================= */
+  canvas.addEventListener("pointermove",pointer);
+  canvas.addEventListener("pointerdown",pointer);
 
-function snakeGame(){
-tapGame();
-}
+  function spawn(){
+    objects.push({
+      x:rand(20,780),
+      y:-30,
+      r:rand(10,25),
+      vy:speed+Math.random()*2,
+      good:Math.random()>.22
+    });
+  }
 
-function breakoutGame(){
-targetGame();
-}
+  let nextSpawn=0;
 
-function mazeGame(){
+  function loop(now){
+    if(!running)return;
 
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<div style="
-font-size:40px;
-line-height:1.5;
-letter-spacing:5px">
-🟩⬛⬛⬛<br>
-🟩🟩🟩⬛<br>
-⬛⬛🟩⬛<br>
-⬛🟩🟩🟩<br>
-⬛🟩⬛🏁
-</div>
+    const dt=Math.min(32,now-last);
+    last=now;
+    elapsed+=dt;
+    nextSpawn-=dt;
 
-<p>Find the exit in your head 😭</p>
+    if(nextSpawn<=0){
+      spawn();
+      nextSpawn=spawnRate;
+    }
 
-<button class="startBtn" onclick="finish(100)">ESCAPE</button>
-</div>
-`;
-}
+    ctx.clearRect(0,0,W,H);
 
-function logicGame(){
-oddGame();
-}
+    /* background */
+    ctx.fillStyle="#080b13";
+    ctx.fillRect(0,0,W,H);
 
-function codeGame(){
+    /* grid */
+    ctx.strokeStyle="rgba(255,255,255,.04)";
+    for(let x=0;x<W;x+=40){
+      ctx.beginPath();
+      ctx.moveTo(x,0);
+      ctx.lineTo(x,H);
+      ctx.stroke();
+    }
+    for(let y=0;y<H;y+=40){
+      ctx.beginPath();
+      ctx.moveTo(0,y);
+      ctx.lineTo(W,y);
+      ctx.stroke();
+    }
 
-let answer=Math.floor(Math.random()*900)+100;
+    /* player */
+    ctx.beginPath();
+    ctx.arc(player.x,player.y,player.r,0,Math.PI*2);
+    ctx.fillStyle="#20d9ff";
+    ctx.shadowBlur=25;
+    ctx.shadowColor="#20d9ff";
+    ctx.fill();
+    ctx.shadowBlur=0;
 
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
-<p>Crack this 3-digit code:</p>
-<div class="big">???</div>
+    for(let i=objects.length-1;i>=0;i--){
+      const o=objects[i];
+      o.y+=o.vy*(dt/16);
 
-<input id="codeInput"
-maxlength="3"
-inputmode="numeric"
-placeholder="000"
-style="
-width:100%;
-padding:14px;
-background:#191c24;
-border:1px solid #292d39;
-color:white;
-border-radius:12px;
-text-align:center;
-font-size:22px;
-outline:0">
+      ctx.beginPath();
+      ctx.arc(o.x,o.y,o.r,0,Math.PI*2);
+      ctx.fillStyle=o.good?"#35e39a":"#ff5577";
+      ctx.fill();
 
-<div class="row">
-<button class="startBtn" onclick="checkCode(${answer})">CRACK</button>
-</div>
+      const dx=o.x-player.x;
+      const dy=o.y-player.y;
 
-<div class="msg" id="msg">
-Hint: the code is ${answer%2===0?"even":"odd"}.
-</div>
-</div>
-`;
-}
+      if(Math.hypot(dx,dy)<o.r+player.r){
+        if(o.good){
+          score+=Math.floor(25*mult);
+          setScore(score);
+          objects.splice(i,1);
+          continue;
+        }else{
+          running=false;
+          fail("You hit a danger object.");
+          return;
+        }
+      }
 
-function checkCode(answer){
+      if(o.y>H+50){
+        objects.splice(i,1);
+      }
+    }
 
-let x=Number(document.getElementById("codeInput").value);
+    if(elapsed>Math.max(5000,7000+level*180)){
+      running=false;
+      win(Math.floor(score+200*mult));
+      return;
+    }
 
-if(x===answer){
-finish(100);
-}else{
-document.getElementById("msg").textContent=
-x<answer?"⬆️ Higher":"⬇️ Lower";
-}
-}
+    animation=requestAnimationFrame(loop);
+  }
 
-function sudokuGame(){
-sequenceGame();
-}
-
-function secretGame(){
-
-document.getElementById("gameArea").innerHTML=`
-<div class="result">
-<div class="emoji">🔐</div>
-<h2>SECRET GAME</h2>
-<p>
-You found the 100th game.
-<br><br>
-This space can become your own personalized
-game for your girlfriend.
-</p>
-
-<button class="startBtn" onclick="finish(100)">
-UNLOCK
-</button>
-</div>
-`;
+  animation=requestAnimationFrame(loop);
 }
 
-/* =========================
-   CREATIVE
-========================= */
+/* =========================================================
+   SNAKE
+========================================================= */
 
-function creativeGame(){
+function snakeGame(g,level,mult){
+  const content=$("#gameContent");
 
-document.getElementById("gameArea").innerHTML=`
-<div class="center">
+  content.innerHTML=`
+    <canvas id="snakeCanvas" width="600" height="600"></canvas>
+    <div class="message">
+      Swipe / drag around the board.
+    </div>
+  `;
 
-<p>Create something random.</p>
+  const canvas=$("#snakeCanvas");
+  const ctx=canvas.getContext("2d");
 
-<div id="creativeBox"
-style="
-height:180px;
-border-radius:18px;
-background:#7668ed;
-display:grid;
-place-items:center;
-font-size:55px">
-💜
-</div>
+  const N=20;
+  let snake=[
+    {x:10,y:10},
+    {x:9,y:10},
+    {x:8,y:10}
+  ];
 
-<div class="row">
-<button class="primary" onclick="randomCreative()">CHANGE</button>
-<button class="secondary" onclick="finish(100)">DONE</button>
-</div>
+  let dir={x:1,y:0};
+  let next={x:1,y:0};
 
-</div>
-`;
+  let food={
+    x:rand(1,N-2),
+    y:rand(1,N-2)
+  };
+
+  let score=0;
+  let running=true;
+  let last=0;
+  const delay=Math.max(65,150-level*2);
+
+  function input(e){
+    const r=canvas.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width*N;
+    const y=(e.clientY-r.top)/r.height*N;
+    const head=snake[0];
+
+    const dx=x-head.x;
+    const dy=y-head.y;
+
+    if(Math.abs(dx)>Math.abs(dy)){
+      if(dx>0 && dir.x!==-1)next={x:1,y:0};
+      if(dx<0 && dir.x!==1)next={x:-1,y:0};
+    }else{
+      if(dy>0 && dir.y!==-1)next={x:0,y:1};
+      if(dy<0 && dir.y!==1)next={x:0,y:-1};
+    }
+  }
+
+  canvas.addEventListener("pointerdown",input);
+  canvas.addEventListener("pointermove",e=>{
+    if(e.buttons)input(e);
+  });
+
+  function loop(t){
+    if(!running)return;
+
+    if(t-last>delay){
+      last=t;
+      dir=next;
+
+      const head={
+        x:snake[0].x+dir.x,
+        y:snake[0].y+dir.y
+      };
+
+      if(
+        head.x<0||
+        head.y<0||
+        head.x>=N||
+        head.y>=N||
+        snake.some(s=>s.x===head.x&&s.y===head.y)
+      ){
+        running=false;
+        fail("Snake crashed.");
+        return;
+      }
+
+      snake.unshift(head);
+
+      if(head.x===food.x&&head.y===food.y){
+        score+=100;
+        setScore(score);
+
+        food={
+          x:rand(1,N-2),
+          y:rand(1,N-2)
+        };
+
+        if(score>=Math.max(300,level*100)){
+          running=false;
+          win(score*mult);
+          return;
+        }
+      }else{
+        snake.pop();
+      }
+    }
+
+    ctx.fillStyle="#080b13";
+    ctx.fillRect(0,0,600,600);
+
+    const s=600/N;
+
+    snake.forEach((p,i)=>{
+      ctx.fillStyle=i===0?"#20d9ff":"#7c5cff";
+      ctx.fillRect(p.x*s+2,p.y*s+2,s-4,s-4);
+    });
+
+    ctx.fillStyle="#35e39a";
+    ctx.beginPath();
+    ctx.arc(
+      food.x*s+s/2,
+      food.y*s+s/2,
+      s*.3,
+      0,
+      Math.PI*2
+    );
+    ctx.fill();
+
+    animation=requestAnimationFrame(loop);
+  }
+
+  animation=requestAnimationFrame(loop);
 }
 
-function randomCreative(){
+/* =========================================================
+   BREAKOUT
+========================================================= */
 
-let colors=["#7668ed","#e879f9","#38bdf8","#4ade80","#facc15","#fb7185"];
-let emojis=["💜","🌸","✨","🌙","⭐","🦋","🌈","💫"];
+function breakoutGame(g,level,mult){
+  const content=$("#gameContent");
 
-let box=document.getElementById("creativeBox");
+  content.innerHTML=`
+    <canvas id="breakCanvas" width="800" height="500"></canvas>
+    <div class="message">
+      Move your finger to control the paddle.
+    </div>
+  `;
 
-box.style.background=colors[Math.floor(Math.random()*colors.length)];
-box.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+  const c=$("#breakCanvas");
+  const ctx=c.getContext("2d");
+
+  let paddle={x:350,w:100,h:15};
+  let ball={x:400,y:430,vx:3+level*.03,vy:-4-level*.035,r:9};
+
+  const rows=Math.min(8,2+Math.floor(level/4));
+  const cols=8;
+  const bricks=[];
+
+  for(let r=0;r<rows;r++){
+    for(let col=0;col<cols;col++){
+      bricks.push({
+        x:55+col*88,
+        y:45+r*25,
+        w:75,
+        h:16,
+        alive:true
+      });
+    }
+  }
+
+  let score=0;
+  let last=performance.now();
+
+  function move(e){
+    const r=c.getBoundingClientRect();
+    paddle.x=(e.clientX-r.left)/r.width*800-paddle.w/2;
+    paddle.x=Math.max(0,Math.min(800-paddle.w,paddle.x));
+  }
+
+  c.addEventListener("pointermove",move);
+  c.addEventListener("pointerdown",move);
+
+  function loop(now){
+    const dt=Math.min(32,now-last);
+    last=now;
+
+    ball.x+=ball.vx*(dt/16);
+    ball.y+=ball.vy*(dt/16);
+
+    if(ball.x<ball.r||ball.x>800-ball.r)ball.vx*=-1;
+    if(ball.y<ball.r)ball.vy*=-1;
+
+    if(
+      ball.y+ball.r>450 &&
+      ball.x>paddle.x &&
+      ball.x<paddle.x+paddle.w
+    ){
+      ball.vy=-Math.abs(ball.vy);
+    }
+
+    bricks.forEach(b=>{
+      if(!b.alive)return;
+
+      if(
+        ball.x>b.x &&
+        ball.x<b.x+b.w &&
+        ball.y>b.y &&
+        ball.y<b.y+b.h
+      ){
+        b.alive=false;
+        ball.vy*=-1;
+        score+=100;
+        setScore(score);
+      }
+    });
+
+    if(ball.y>520){
+      fail("The ball fell.");
+      return;
+    }
+
+    if(bricks.every(b=>!b.alive)){
+      win(score*mult);
+      return;
+    }
+
+    ctx.fillStyle="#080b13";
+    ctx.fillRect(0,0,800,500);
+
+    bricks.forEach(b=>{
+      if(b.alive){
+        ctx.fillStyle="#7c5cff";
+        ctx.fillRect(b.x,b.y,b.w,b.h);
+      }
+    });
+
+    ctx.fillStyle="#20d9ff";
+    ctx.fillRect(paddle.x,450,paddle.w,paddle.h);
+
+    ctx.fillStyle="#fff";
+    ctx.beginPath();
+    ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
+    ctx.fill();
+
+    animation=requestAnimationFrame(loop);
+  }
+
+  animation=requestAnimationFrame(loop);
 }
 
-/* =========================
-   RANDOM / FAVORITES
-========================= */
+/* =========================================================
+   RUNNER
+========================================================= */
+
+function runnerGame(g,level,mult){
+  const content=$("#gameContent");
+
+  content.innerHTML=`
+    <canvas id="runnerCanvas" width="800" height="450"></canvas>
+    <div class="message">Tap to jump.</div>
+  `;
+
+  const c=$("#runnerCanvas");
+  const ctx=c.getContext("2d");
+
+  let player={
+    x:100,
+    y:350,
+    vy:0,
+    w:35,
+    h:45,
+    grounded:true
+  };
+
+  let obstacles=[];
+  let score=0;
+  let last=performance.now();
+  let spawn=0;
+  let speed=4+level*.08;
+
+  function jump(){
+    if(player.grounded){
+      player.vy=-11-Math.min(5,level*.03);
+      player.grounded=false;
+    }
+  }
+
+  c.addEventListener("pointerdown",jump);
+
+  function loop(now){
+    const dt=Math.min(32,now-last);
+    last=now;
+
+    player.vy+=.55*(dt/16);
+    player.y+=player.vy*(dt/16);
+
+    if(player.y>=350){
+      player.y=350;
+      player.vy=0;
+      player.grounded=true;
+    }
+
+    spawn-=dt;
+
+    if(spawn<=0){
+      obstacles.push({
+        x:820,
+        y:365,
+        w:25+rand(0,20),
+        h:30+rand(0,35)
+      });
+
+      spawn=Math.max(420,900-level*7);
+    }
+
+    obstacles.forEach(o=>{
+      o.x-=speed*(dt/16);
+    });
+
+    for(const o of obstacles){
+      if(
+        player.x<o.x+o.w &&
+        player.x+player.w>o.x &&
+        player.y<o.y+o.h &&
+        player.y+player.h>o.y
+      ){
+        fail("You hit an obstacle.");
+        return;
+      }
+    }
+
+    obstacles=obstacles.filter(o=>o.x>-100);
+
+    score+=Math.floor(dt/10);
+    setScore(score);
+
+    if(score>=Math.max(500,level*130)){
+      win(score*mult);
+      return;
+    }
+
+    ctx.fillStyle="#080b13";
+    ctx.fillRect(0,0,800,450);
+
+    ctx.fillStyle="#151927";
+    ctx.fillRect(0,410,800,40);
+
+    ctx.fillStyle="#20d9ff";
+    ctx.fillRect(player.x,player.y,player.w,player.h);
+
+    ctx.fillStyle="#ff5577";
+    obstacles.forEach(o=>{
+      ctx.fillRect(o.x,o.y,o.w,o.h);
+    });
+
+    animation=requestAnimationFrame(loop);
+  }
+
+  animation=requestAnimationFrame(loop);
+}
+
+/* =========================================================
+   PAINT / CREATIVE
+========================================================= */
+
+function paintGame(g,level,mult){
+  const content=$("#gameContent");
+
+  content.innerHTML=`
+    <div style="text-align:center">
+      <div class="gamePrompt">Create something</div>
+      <div class="sub">
+        Tap the canvas and make your own tiny artwork.
+      </div>
+
+      <canvas id="paintCanvas"
+        width="600"
+        height="420"
+        style="
+          width:100%;
+          max-width:600px;
+          background:#fff;
+          border-radius:18px;
+          touch-action:none;
+        "></canvas>
+
+      <div style="
+        display:flex;
+        gap:8px;
+        justify-content:center;
+        margin-top:12px;
+        flex-wrap:wrap
+      ">
+        <button class="secondary" onclick="clearPaint()">Clear</button>
+        <button class="primary" onclick="finishPaint()">Finish</button>
+      </div>
+    </div>
+  `;
+
+  const c=$("#paintCanvas");
+  const ctx=c.getContext("2d");
+  ctx.lineWidth=Math.max(3,7-level*.05);
+  ctx.lineCap="round";
+  ctx.strokeStyle="#7c5cff";
+
+  let drawing=false;
+  let strokes=0;
+
+  function pos(e){
+    const r=c.getBoundingClientRect();
+    return {
+      x:(e.clientX-r.left)*600/r.width,
+      y:(e.clientY-r.top)*420/r.height
+    };
+  }
+
+  c.addEventListener("pointerdown",e=>{
+    drawing=true;
+    const p=pos(e);
+    ctx.beginPath();
+    ctx.moveTo(p.x,p.y);
+  });
+
+  c.addEventListener("pointermove",e=>{
+    if(!drawing)return;
+    const p=pos(e);
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
+    strokes++;
+  });
+
+  c.addEventListener("pointerup",()=>drawing=false);
+  c.addEventListener("pointerleave",()=>drawing=false);
+
+  window.clearPaint=()=>{
+    ctx.clearRect(0,0,600,420);
+    strokes=0;
+  };
+
+  window.finishPaint=()=>{
+    if(strokes<5){
+      fail("Draw a little more first.");
+    }else{
+      win(Math.floor((200+strokes)*mult));
+    }
+  };
+}
+
+/* =========================================================
+   PET
+========================================================= */
+
+function petGame(g,level,mult){
+  let happiness=Math.min(100,50+level);
+
+  basicCenter(`
+    <div style="font-size:90px" id="petEmoji">🐶</div>
+
+    <div class="gamePrompt">Your pet needs you</div>
+
+    <div class="sub">
+      Happiness: <b id="happy">${happiness}</b>%
+    </div>
+
+    <div class="options">
+      <button class="option" id="feed">🍖 Feed</button>
+      <button class="option" id="play">🎾 Play</button>
+      <button class="option" id="pet">❤️ Pet</button>
+      <button class="option" id="sleep">😴 Sleep</button>
+    </div>
+
+    <div class="message">
+      Fill the happiness meter to 100%.
+    </div>
+  `);
+
+  let points=0;
+
+  ["feed","play","pet","sleep"].forEach(id=>{
+    $("#"+id).onclick=()=>{
+      points+=rand(10,25);
+      happiness=Math.min(100,happiness+points/10);
+      $("#happy").textContent=Math.floor(happiness);
+
+      if(happiness>=100){
+        win(Math.floor((200+level*20)*mult));
+      }
+    };
+  });
+}
+
+/* =========================================================
+   GENERIC CHOICE ENGINE
+========================================================= */
+
+const genericPrompts=[
+ ["Pick one","🌙","☀️"],
+ ["Choose","🍕","🍔"],
+ ["Select","🎮","🎧"],
+ ["Your move","⚡","🔥"],
+ ["Which one?","🌊","🏔️"],
+ ["Choose a path","⬅️","➡️"],
+ ["Pick your style","✨","💎"],
+ ["Choose your power","🌀","⚡"]
+];
+
+function genericChoice(g,level,mult){
+  const q=randomItem(genericPrompts);
+
+  basicCenter(`
+    <div class="bigEmoji">${g.icon}</div>
+    <div class="gamePrompt">${q[0]}</div>
+    <div class="sub">
+      ${esc(g.desc)}
+      · Level ${level}
+    </div>
+
+    <div class="options">
+      <button class="option" onclick="genericChoiceWin(${level},${mult})">
+        ${q[1]}
+      </button>
+
+      <button class="option" onclick="genericChoiceWin(${level},${mult})">
+        ${q[2]}
+      </button>
+    </div>
+  `);
+}
+
+window.genericChoiceWin=function(level,mult){
+  win(Math.floor((100+level*15)*mult));
+};
+
+/* =========================================================
+   GAME FAMILY ROUTER
+========================================================= */
+
+const engines={
+  memory:memoryGame,
+  math:mathGame,
+  guess:guessGame,
+  higher:higherGame,
+  sequence:sequenceGame,
+  word:wordGame,
+  target:targetGame,
+  reaction:reactionGame,
+  color:colorGame,
+  odd:oddGame,
+  timing:timingGame,
+  choice:choiceGame,
+  trivia:triviaGame,
+  snake:snakeGame,
+  breakout:breakoutGame,
+  runner:runnerGame,
+  paint:paintGame,
+  pet:petGame,
+
+  dodge:(g,l,m)=>canvasGame(g,l,m,"dodge"),
+  fall:(g,l,m)=>canvasGame(g,l,m,"fall"),
+  catch:(g,l,m)=>canvasGame(g,l,m,"catch"),
+  speedtap:targetGame,
+  moving:targetGame,
+  click:targetGame,
+  walls:(g,l,m)=>canvasGame(g,l,m,"walls"),
+  colortap:colorGame,
+  circle:targetGame,
+  laser:(g,l,m)=>canvasGame(g,l,m,"laser"),
+  blocks:(g,l,m)=>canvasGame(g,l,m,"blocks"),
+  reflexmemory:sequenceGame,
+  second:timingGame,
+  fast:targetGame,
+  perfect:timingGame,
+  impossible:reactionGame,
+
+  flappy:(g,l,m)=>canvasGame(g,l,m,"flappy"),
+  shooter:(g,l,m)=>canvasGame(g,l,m,"shooter"),
+  asteroid:(g,l,m)=>canvasGame(g,l,m,"asteroid"),
+  collector:(g,l,m)=>canvasGame(g,l,m,"collector"),
+  maze:(g,l,m)=>canvasGame(g,l,m,"maze"),
+  jump:runnerGame,
+  stack:timingGame,
+  bounce:(g,l,m)=>canvasGame(g,l,m,"bounce"),
+  brick:breakoutGame,
+  golf:timingGame,
+  pinball:(g,l,m)=>canvasGame(g,l,m,"pinball"),
+  road:(g,l,m)=>canvasGame(g,l,m,"road"),
+  car:(g,l,m)=>canvasGame(g,l,m,"car"),
+  rocket:timingGame,
+  balloon:targetGame,
+  shoot:targetGame,
+  survival:(g,l,m)=>canvasGame(g,l,m,"survival"),
+
+  emoji:triviaGame,
+  riddle:triviaGame,
+  tf:choiceGame,
+  spot:oddGame,
+  logic:sequenceGame,
+  code:guessGame,
+  sudoku:sequenceGame,
+  dontred:colorGame,
+  question:choiceGame,
+  compliment:choiceGame,
+  compat:choiceGame,
+  story:choiceGame,
+  music:timingGame,
+  garden:petGame,
+  aquarium:petGame,
+  world:paintGame,
+  secret:choiceGame
+};
+
+/* =========================================================
+   FAVORITES / NAVIGATION
+========================================================= */
+
+function toggleFav(id){
+  if(state.favorites.includes(id)){
+    state.favorites=state.favorites.filter(x=>x!==id);
+    toast("Removed from favorites");
+  }else{
+    state.favorites.push(id);
+    toast("Added to favorites ❤️");
+  }
+
+  save();
+  render();
+}
 
 function randomGame(){
-
-let i=Math.floor(Math.random()*games.length);
-openGame(i);
+  startGame(randomItem(games).id);
 }
 
-function showFavorites(){
+function continueGame(){
+  const list=state.recent.length
+    ? state.recent
+    : [1];
 
-let fav=state.favorites;
-
-if(!fav.length){
-alert("Wala pa kay favorites ❤️");
-return;
+  startGame(randomItem(list));
 }
 
-currentFilter="";
-
-document.getElementById("search").value="";
-
-let box=document.getElementById("games");
-box.innerHTML="";
-
-fav.forEach(i=>{
-
-let g=games[i];
-
-let card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-<div class="cardTop">
-<div class="icon">${g[1]}</div>
-<button class="fav on">♥</button>
-</div>
-<h4>${i+1}. ${g[0]}</h4>
-<p>${g[3]}</p>
-<div class="cardBottom">
-<span class="cat">${g[2]}</span>
-<span class="high">🏆 ${state.highscores[i]||0}</span>
-</div>
-`;
-
-card.onclick=()=>openGame(i);
-box.appendChild(card);
-});
-
-document.getElementById("count").textContent=fav.length+" favorites";
-}
-
-function showRecent(){
-
-if(!state.played.length){
-alert("Wala pa kay recently played games.");
-return;
-}
-
-let box=document.getElementById("games");
-box.innerHTML="";
-
-state.played.forEach(i=>{
-
-let g=games[i];
-
-let card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-<div class="cardTop">
-<div class="icon">${g[1]}</div>
-</div>
-<h4>${i+1}. ${g[0]}</h4>
-<p>${g[3]}</p>
-<div class="cardBottom">
-<span class="cat">${g[2]}</span>
-<span class="high">🏆 ${state.highscores[i]||0}</span>
-</div>
-`;
-
-card.onclick=()=>openGame(i);
-box.appendChild(card);
-});
-
-document.getElementById("count").textContent=
-state.played.length+" recently played";
-}
-
-/* =========================
-   DAILY
-========================= */
-
-function dailyGame(){
-
-let day=new Date().getDate();
-
-openGame(day%games.length);
-}
-
-document.getElementById("dailyText").textContent=
-"Game #"+((new Date().getDate()%100)+1)+" is today's challenge.";
-
-/* =========================
+/* =========================================================
    SETTINGS
-========================= */
+========================================================= */
 
-function settings(){
+function openSettings(){
+  const overlay=document.createElement("div");
+  overlay.className="overlay show";
+  overlay.id="settingsOverlay";
 
-let sound=state.sound?"ON":"OFF";
-let vibration=state.vibration?"ON":"OFF";
+  overlay.innerHTML=`
+    <div class="gameWindow" style="height:auto;max-height:90vh">
+      <div class="gameHead">
+        <div class="gameTitle">
+          <strong>⚙️ PLAYBOX Settings</strong>
+          <small>Customize your experience</small>
+        </div>
+        <button class="close"
+          onclick="$('#settingsOverlay').remove()">✕</button>
+      </div>
 
-let choice=prompt(
-"PLAYBOX SETTINGS\n\n"+
-"Type:\n"+
-"sound = "+sound+"\n"+
-"vibration = "+vibration+
-"\n\nEnter sound or vibration to toggle."
+      <div class="gameBody">
+
+        <div class="achievement">
+          <b>Theme</b>
+          <span>Choose your appearance.</span>
+
+          <div class="options" style="margin-top:10px">
+            <button class="option"
+              onclick="state.theme='dark';save();render();$('#settingsOverlay').remove()">
+              🌙 Dark
+            </button>
+
+            <button class="option"
+              onclick="state.theme='light';save();render();$('#settingsOverlay').remove()">
+              ☀️ Light
+            </button>
+          </div>
+        </div>
+
+        <div class="achievement">
+          <b>Game Sound</b>
+          <span>${state.sound?"Enabled":"Disabled"}</span>
+
+          <button class="secondary"
+            style="margin-top:10px"
+            onclick="state.sound=!state.sound;save();openSettings()">
+            Toggle
+          </button>
+        </div>
+
+        <div class="achievement">
+          <b>Vibration</b>
+          <span>${state.vibration?"Enabled":"Disabled"}</span>
+
+          <button class="secondary"
+            style="margin-top:10px"
+            onclick="state.vibration=!state.vibration;save();openSettings()">
+            Toggle
+          </button>
+        </div>
+
+        <div class="achievement">
+          <b>Reset Progress</b>
+          <span>This deletes your PLAYBOX progress.</span>
+
+          <button class="secondary"
+            style="margin-top:10px"
+            onclick="resetProgress()">
+            Reset Everything
+          </button>
+        </div>
+
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+}
+
+function resetProgress(){
+  if(confirm("Reset ALL PLAYBOX progress? This cannot be undone.")){
+    localStorage.removeItem(KEY);
+    location.reload();
+  }
+}
+
+/* =========================================================
+   TOAST / EFFECTS
+========================================================= */
+
+function toast(text){
+  const t=$("#toast");
+  t.textContent=text;
+  t.classList.add("show");
+
+  clearTimeout(window.__toast);
+  window.__toast=setTimeout(()=>{
+    t.classList.remove("show");
+  },1600);
+}
+
+function confetti(){
+  for(let i=0;i<35;i++){
+    const c=document.createElement("i");
+    c.className="confetti";
+
+    c.style.left=(45+Math.random()*10)+"%";
+    c.style.top="45%";
+    c.style.background=[
+      "#7c5cff",
+      "#20d9ff",
+      "#35e39a",
+      "#ffd45c",
+      "#ff5577"
+    ][rand(0,4)];
+
+    c.style.setProperty("--x",(Math.random()*500-250)+"px");
+    c.style.setProperty("--y",(Math.random()*600-100)+"px");
+
+    document.body.appendChild(c);
+
+    setTimeout(()=>c.remove(),1400);
+  }
+
+  if(state.vibration && navigator.vibrate){
+    navigator.vibrate([30,30,50]);
+  }
+}
+
+/* =========================================================
+   KEYBOARD SUPPORT
+========================================================= */
+
+document.addEventListener("keydown",e=>{
+  if(!activeGame)return;
+
+  if(e.key==="Escape"){
+    closeGame();
+  }
+
+  if(e.key===" "){
+    const btn=document.querySelector(".bigAction");
+    if(btn){
+      e.preventDefault();
+      btn.click();
+    }
+  }
+});
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+render();
+
+console.log(
+  "%cPLAYBOX 1000%c",
+  "font-size:28px;font-weight:900;color:#7c5cff",
+  "font-size:14px;color:#20d9ff"
 );
 
-if(choice==="sound"){
-state.sound=!state.sound;
-save();
-alert("Sound: "+(state.sound?"ON":"OFF"));
-}
-
-if(choice==="vibration"){
-state.vibration=!state.vibration;
-save();
-alert("Vibration: "+(state.vibration?"ON":"OFF"));
-}
-}
-
-/* =========================
-   INIT
-========================= */
-
-updateStats();
-renderGames();
-
+console.log("Games:",games.length);
+console.log("Core mechanics:",coreGames.length);
+console.log("Variants:",variantNames.length);
 </script>
-
 </body>
 </html>
