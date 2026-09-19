@@ -1,0 +1,2963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+<title>HACKLAB — Cybersecurity Simulator</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  -webkit-tap-highlight-color:transparent;
+}
+
+:root{
+  --bg:#080a0d;
+  --panel:#101318;
+  --panel2:#151920;
+  --line:#252b34;
+  --text:#edf2f7;
+  --muted:#858e9b;
+  --green:#39e58c;
+  --blue:#5ca8ff;
+  --yellow:#f4c95d;
+  --red:#ff5d6c;
+  --purple:#b388ff;
+}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  min-height:100vh;
+}
+
+button,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  width:100%;
+  max-width:1120px;
+  margin:auto;
+  padding:12px;
+}
+
+/* HEADER */
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.brand{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.logo{
+  width:43px;
+  height:43px;
+  border:1px solid #303742;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  color:var(--green);
+  background:#0d1116;
+  font-size:20px;
+  box-shadow:0 0 20px rgba(57,229,140,.07);
+}
+
+.brand h1{
+  font-size:18px;
+  letter-spacing:.04em;
+}
+
+.brand p{
+  font-size:9px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+.levelBadge{
+  border:1px solid #29313a;
+  background:#10151b;
+  color:var(--green);
+  border-radius:10px;
+  padding:8px 10px;
+  font-size:9px;
+  font-weight:800;
+}
+
+/* STATS */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  margin-bottom:10px;
+}
+
+.stat{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:9px;
+}
+
+.stat span{
+  display:block;
+  color:var(--muted);
+  font-size:7px;
+  letter-spacing:.08em;
+  margin-bottom:3px;
+}
+
+.stat strong{
+  font-size:13px;
+}
+
+/* DIFFICULTY */
+
+.difficulty{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:10px;
+  margin-bottom:10px;
+}
+
+.difficulty label{
+  display:block;
+  color:var(--muted);
+  font-size:8px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.diffRow{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:5px;
+}
+
+.diff{
+  border:1px solid #282e36;
+  background:#15191f;
+  color:#8e97a2;
+  border-radius:8px;
+  padding:8px 4px;
+  font-size:8px;
+  font-weight:800;
+}
+
+.diff.active{
+  background:#13251c;
+  color:var(--green);
+  border-color:#285b43;
+}
+
+/* LAYOUT */
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 310px;
+  gap:10px;
+}
+
+/* CARD */
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:15px;
+}
+
+/* TERMINAL */
+
+.terminalCard{
+  overflow:hidden;
+}
+
+.terminalTop{
+  height:36px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 10px;
+}
+
+.dots{
+  display:flex;
+  gap:5px;
+}
+
+.dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#454c55;
+}
+
+.terminalTitle{
+  font-size:8px;
+  color:var(--muted);
+}
+
+.terminal{
+  height:340px;
+  overflow:auto;
+  padding:12px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:10px;
+  line-height:1.65;
+  background:#090c10;
+}
+
+.line{
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+.prompt{
+  color:var(--green);
+}
+
+.output{
+  color:#c1c8d0;
+}
+
+.success{
+  color:var(--green);
+}
+
+.warning{
+  color:var(--yellow);
+}
+
+.error{
+  color:var(--red);
+}
+
+.info{
+  color:var(--blue);
+}
+
+/* TERMINAL INPUT */
+
+.commandBar{
+  display:flex;
+  border-top:1px solid var(--line);
+  padding:8px;
+  gap:6px;
+}
+
+.commandBar input{
+  flex:1;
+  min-width:0;
+  background:#0b0e12;
+  border:1px solid #252c35;
+  border-radius:8px;
+  color:var(--text);
+  outline:none;
+  padding:9px;
+  font-family:ui-monospace,monospace;
+  font-size:10px;
+}
+
+.runCommand{
+  background:#173622;
+  color:var(--green);
+  border:1px solid #285c40;
+  border-radius:8px;
+  padding:0 11px;
+  font-size:9px;
+  font-weight:800;
+}
+
+/* EDITOR */
+
+.editorCard{
+  margin-top:10px;
+  padding:11px;
+}
+
+.sectionTitle{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.sectionTitle h2{
+  font-size:12px;
+}
+
+.sectionTitle span{
+  color:var(--muted);
+  font-size:8px;
+}
+
+textarea{
+  width:100%;
+  min-height:180px;
+  resize:vertical;
+  background:#090c10;
+  border:1px solid #29313a;
+  border-radius:10px;
+  color:#dbe4ed;
+  outline:none;
+  padding:11px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:10px;
+  line-height:1.55;
+}
+
+textarea:focus{
+  border-color:#3b7557;
+}
+
+.editorButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:6px;
+  margin-top:7px;
+}
+
+.action{
+  border-radius:8px;
+  padding:9px 5px;
+  font-size:9px;
+  font-weight:800;
+  border:1px solid #29313a;
+  background:#161b21;
+  color:#d8dee5;
+}
+
+.action.primary{
+  background:#173622;
+  color:var(--green);
+  border-color:#285c40;
+}
+
+.action.answer{
+  background:#211d2d;
+  color:var(--purple);
+  border-color:#493b69;
+}
+
+/* OUTPUT */
+
+.outputBox{
+  margin-top:8px;
+  background:#090c10;
+  border:1px solid #252c35;
+  border-radius:9px;
+  min-height:45px;
+  padding:9px;
+  font-family:ui-monospace,monospace;
+  font-size:9px;
+  white-space:pre-wrap;
+  color:#aeb7c1;
+}
+
+/* SIDE */
+
+.side{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.panel{
+  padding:13px;
+}
+
+.panel h3{
+  font-size:12px;
+  margin-bottom:9px;
+}
+
+.panelText{
+  color:#a1a9b3;
+  font-size:9px;
+  line-height:1.6;
+}
+
+.guideStep{
+  display:flex;
+  gap:8px;
+  margin-bottom:9px;
+}
+
+.num{
+  width:20px;
+  height:20px;
+  flex:none;
+  border-radius:6px;
+  background:#18211c;
+  color:var(--green);
+  display:grid;
+  place-items:center;
+  font-size:8px;
+  font-weight:900;
+}
+
+.guideStep p{
+  color:#a7afb9;
+  font-size:9px;
+  line-height:1.5;
+}
+
+.guideStep b{
+  color:#e6ebef;
+}
+
+/* HINT */
+
+.hiddenBox{
+  display:none;
+  margin-top:8px;
+  background:#161a20;
+  border:1px solid #2c333c;
+  border-radius:8px;
+  padding:9px;
+  color:#aeb6c0;
+  font-size:9px;
+  line-height:1.55;
+}
+
+.miniButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  margin-top:8px;
+}
+
+.mini{
+  padding:8px 5px;
+  border-radius:8px;
+  border:1px solid #2b333c;
+  background:#161a20;
+  color:#b9c1ca;
+  font-size:8px;
+  font-weight:800;
+}
+
+/* MISSION */
+
+.mission{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #222830;
+  padding:7px 0;
+  font-size:9px;
+}
+
+.mission:last-child{
+  border-bottom:0;
+}
+
+.muted{
+  color:var(--muted);
+}
+
+/* LESSONS */
+
+.lessons{
+  margin-top:10px;
+}
+
+.lessonGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin-top:8px;
+}
+
+.lesson{
+  padding:10px;
+  background:#14181e;
+  border:1px solid #242b34;
+  border-radius:10px;
+}
+
+.lesson small{
+  color:var(--green);
+  font-size:7px;
+  font-weight:900;
+}
+
+.lesson h3{
+  font-size:10px;
+  margin:4px 0;
+}
+
+.lesson p{
+  color:#858e99;
+  font-size:8px;
+  line-height:1.5;
+}
+
+/* NAV */
+
+.lessonNav{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+  margin-top:10px;
+}
+
+.navBtn{
+  padding:10px;
+  background:#151a20;
+  border:1px solid #292f37;
+  color:#c7ced6;
+  border-radius:9px;
+  font-size:9px;
+  font-weight:800;
+}
+
+/* CTF */
+
+.ctf{
+  margin-top:10px;
+  padding:13px;
+}
+
+.ctfTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:7px;
+}
+
+.ctf h2{
+  font-size:12px;
+}
+
+.ctfBadge{
+  font-size:7px;
+  color:var(--yellow);
+  border:1px solid #5a4b25;
+  background:#211d11;
+  padding:5px 7px;
+  border-radius:6px;
+}
+
+.challengeText{
+  color:#9ba4ae;
+  font-size:9px;
+  line-height:1.55;
+}
+
+.flagInput{
+  width:100%;
+  margin-top:8px;
+  background:#0b0e12;
+  border:1px solid #29313a;
+  border-radius:8px;
+  color:#fff;
+  padding:9px;
+  outline:none;
+  font-size:9px;
+}
+
+.submitFlag{
+  width:100%;
+  margin-top:6px;
+  padding:9px;
+  border-radius:8px;
+  background:#173622;
+  color:var(--green);
+  border:1px solid #285c40;
+  font-size:9px;
+  font-weight:800;
+}
+
+/* PROGRESS */
+
+.progressBar{
+  height:6px;
+  background:#20252c;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:7px;
+}
+
+.progressFill{
+  width:0%;
+  height:100%;
+  background:var(--green);
+  transition:.3s;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(6px);
+  z-index:99;
+  padding:18px;
+}
+
+.modalBox{
+  width:min(390px,100%);
+  background:#11151a;
+  border:1px solid #303842;
+  border-radius:16px;
+  padding:20px;
+  text-align:center;
+}
+
+.modalIcon{
+  font-size:35px;
+}
+
+.modalBox h2{
+  margin-top:5px;
+  font-size:19px;
+}
+
+.modalBox p{
+  color:#8f98a3;
+  font-size:9px;
+  margin:5px 0 14px;
+}
+
+.closeModal{
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid #303842;
+  background:#192019;
+  color:var(--green);
+  font-size:9px;
+  font-weight:800;
+}
+
+/* MOBILE */
+
+@media(max-width:800px){
+
+  .layout{
+    grid-template-columns:1fr;
+  }
+
+  .side{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .side .panel:last-child{
+    grid-column:1/-1;
+  }
+
+  .lessonGrid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:500px){
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .diffRow{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .side{
+    grid-template-columns:1fr;
+  }
+
+  .side .panel:last-child{
+    grid-column:auto;
+  }
+
+  .editorButtons{
+    grid-template-columns:1fr;
+  }
+
+  .terminal{
+    height:300px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- HEADER -->
+
+<header class="header">
+
+  <div class="brand">
+
+    <div class="logo">
+      &lt;/&gt;
+    </div>
+
+    <div>
+      <h1>HACKLAB</h1>
+      <p>CYBERSECURITY LEARNING SIMULATOR</p>
+    </div>
+
+  </div>
+
+  <div class="levelBadge" id="levelBadge">
+    LEVEL 01
+  </div>
+
+</header>
+
+
+<!-- STATS -->
+
+<section class="stats">
+
+  <div class="stat">
+    <span>XP</span>
+    <strong id="xp">0</strong>
+  </div>
+
+  <div class="stat">
+    <span>LESSONS</span>
+    <strong id="lessonStat">1 / 12</strong>
+  </div>
+
+  <div class="stat">
+    <span>CHALLENGES</span>
+    <strong id="challengeStat">0</strong>
+  </div>
+
+  <div class="stat">
+    <span>STATUS</span>
+    <strong id="status">LEARNING</strong>
+  </div>
+
+</section>
+
+
+<!-- DIFFICULTY -->
+
+<section class="difficulty">
+
+  <label>LAB DIFFICULTY</label>
+
+  <div class="diffRow">
+
+    <button class="diff active"
+      id="easyBtn"
+      onclick="setDifficulty('easy')">
+      EASY
+    </button>
+
+    <button class="diff"
+      id="mediumBtn"
+      onclick="setDifficulty('medium')">
+      MEDIUM
+    </button>
+
+    <button class="diff"
+      id="hardBtn"
+      onclick="setDifficulty('hard')">
+      HARD
+    </button>
+
+    <button class="diff"
+      id="difficultBtn"
+      onclick="setDifficulty('difficult')">
+      DIFFICULT
+    </button>
+
+  </div>
+
+</section>
+
+
+<div class="layout">
+
+
+<!-- LEFT -->
+
+<main>
+
+
+<!-- TERMINAL -->
+
+<section class="card terminalCard">
+
+  <div class="terminalTop">
+
+    <div class="dots">
+
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+
+    </div>
+
+    <div class="terminalTitle">
+      HACKLAB LOCAL TERMINAL
+    </div>
+
+    <div style="width:28px"></div>
+
+  </div>
+
+
+  <div class="terminal" id="terminal">
+
+    <div class="line success">
+      HACKLAB v3.0
+    </div>
+
+    <div class="line output">
+      Cybersecurity learning environment initialized.
+    </div>
+
+    <div class="line output">
+      All targets are simulated and local.
+    </div>
+
+    <br>
+
+    <div class="line">
+      Type <span class="info">help</span> to see commands.
+    </div>
+
+  </div>
+
+
+  <div class="commandBar">
+
+    <input
+      id="commandInput"
+      placeholder="type a command..."
+      autocomplete="off"
+    >
+
+    <button
+      class="runCommand"
+      onclick="runCommand()">
+      RUN
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- CODE EDITOR -->
+
+<section class="card editorCard">
+
+  <div class="sectionTitle">
+
+    <h2>💻 Code Lab</h2>
+
+    <span id="languageLabel">
+      JavaScript
+    </span>
+
+  </div>
+
+
+  <textarea
+    id="codeEditor"
+    spellcheck="false"
+  >// Lesson 1
+// Try changing the value of password.
+
+// Your goal:
+// make isStrong become true.
+
+const password = "hello123";
+
+const isStrong =
+  password.length >= 8;
+
+console.log(isStrong);</textarea>
+
+
+  <div class="editorButtons">
+
+    <button
+      class="action primary"
+      onclick="runCode()">
+      ▶ RUN CODE
+    </button>
+
+    <button
+      class="action"
+      onclick="resetCode()">
+      ↻ RESET
+    </button>
+
+    <button
+      class="action answer"
+      onclick="showAnswer()">
+      ✓ ANSWER
+    </button>
+
+  </div>
+
+
+  <div
+    class="outputBox"
+    id="codeOutput">
+    Output will appear here...
+  </div>
+
+</section>
+
+
+<!-- LESSONS -->
+
+<section class="card editorCard lessons">
+
+  <div class="sectionTitle">
+
+    <h2>📚 What You'll Learn</h2>
+
+    <span id="lessonDifficulty">
+      Beginner
+    </span>
+
+  </div>
+
+
+  <div class="lessonGrid">
+
+    <div class="lesson">
+
+      <small>01</small>
+
+      <h3>Passwords</h3>
+
+      <p>
+        Learn password length,
+        patterns and basic strength checks.
+      </p>
+
+    </div>
+
+
+    <div class="lesson">
+
+      <small>02</small>
+
+      <h3>Hashing</h3>
+
+      <p>
+        Understand why systems store
+        hashes instead of plain passwords.
+      </p>
+
+    </div>
+
+
+    <div class="lesson">
+
+      <small>03</small>
+
+      <h3>Input Validation</h3>
+
+      <p>
+        Learn why user input should
+        never automatically be trusted.
+      </p>
+
+    </div>
+
+
+    <div class="lesson">
+
+      <small>04</small>
+
+      <h3>Encoding</h3>
+
+      <p>
+        Understand Base64 and why
+        encoding is not encryption.
+      </p>
+
+    </div>
+
+
+    <div class="lesson">
+
+      <small>05</small>
+
+      <h3>Authentication</h3>
+
+      <p>
+        Build safer login logic using
+        verification and state checks.
+      </p>
+
+    </div>
+
+
+    <div class="lesson">
+
+      <small>06</small>
+
+      <h3>SQL Injection</h3>
+
+      <p>
+        Explore the concept inside
+        a completely local toy database.
+      </p>
+
+    </div>
+
+
+    <div class="lesson">
+
+      <small>07</small>
+
+      <h3>HTTP</h3>
+
+      <p>
+        Learn requests, responses,
+        headers and status codes.
+      </p>
+
+    </div>
+
+
+    <div class="lesson">
+
+      <small>08</small>
+
+      <h3>Sessions</h3>
+
+      <p>
+        Understand session tokens,
+        expiration and authentication state.
+      </p>
+
+    </div>
+
+
+    <div class="lesson">
+
+      <small>09</small>
+
+      <h3>JavaScript Security</h3>
+
+      <p>
+        Learn dangerous assumptions,
+        DOM input and safe handling.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="lessonNav">
+
+    <button
+      class="navBtn"
+      onclick="previousLesson()">
+      ← PREVIOUS
+    </button>
+
+    <button
+      class="navBtn"
+      onclick="nextLesson()">
+      NEXT LESSON →
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- CTF -->
+
+<section class="card ctf">
+
+  <div class="ctfTop">
+
+    <h2>🏴 Local CTF Challenge</h2>
+
+    <div class="ctfBadge">
+      SIMULATION
+    </div>
+
+  </div>
+
+  <p class="challengeText" id="ctfText">
+    The lab has hidden a flag inside
+    the simulated environment.
+    Use the lesson concepts and
+    terminal commands to investigate.
+  </p>
+
+
+  <input
+    class="flagInput"
+    id="flagInput"
+    placeholder="HACKLAB{...}"
+  >
+
+
+  <button
+    class="submitFlag"
+    onclick="submitFlag()">
+    SUBMIT FLAG
+  </button>
+
+</section>
+
+</main>
+
+
+<!-- RIGHT SIDE -->
+
+<aside class="side">
+
+
+<!-- GUIDE -->
+
+<section class="card panel">
+
+  <h3>🧠 Step-by-Step Guide</h3>
+
+  <div class="guideStep">
+
+    <div class="num">1</div>
+
+    <p>
+      <b>Read the problem.</b><br>
+      Don't immediately guess the answer.
+      Identify what the code is checking.
+    </p>
+
+  </div>
+
+
+  <div class="guideStep">
+
+    <div class="num">2</div>
+
+    <p>
+      <b>Understand the input.</b><br>
+      Ask: what data enters the program?
+      Password? Username? Number? Text?
+    </p>
+
+  </div>
+
+
+  <div class="guideStep">
+
+    <div class="num">3</div>
+
+    <p>
+      <b>Follow the logic.</b><br>
+      Read conditions from top to bottom
+      and see what changes.
+    </p>
+
+  </div>
+
+
+  <div class="guideStep">
+
+    <div class="num">4</div>
+
+    <p>
+      <b>Test safely.</b><br>
+      Run the code against harmless
+      examples and observe the output.
+    </p>
+
+  </div>
+
+
+  <div class="guideStep">
+
+    <div class="num">5</div>
+
+    <p>
+      <b>Think like a defender.</b><br>
+      After finding the weakness,
+      ask how a programmer could prevent it.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- HINT -->
+
+<section class="card panel">
+
+  <h3>💡 Help System</h3>
+
+  <p class="panelText">
+    Stuck? Don't reveal the answer immediately.
+    Try the hint first.
+  </p>
+
+  <div class="miniButtons">
+
+    <button
+      class="mini"
+      onclick="toggleBox('hintBox')">
+      SHOW HINT
+    </button>
+
+    <button
+      class="mini"
+      onclick="showAnswer()">
+      SHOW ANSWER
+    </button>
+
+  </div>
+
+
+  <div
+    class="hiddenBox"
+    id="hintBox">
+
+    Look at the condition.
+    Ask yourself:
+    <br><br>
+    <b>What property of the password
+    is being checked?</b>
+
+  </div>
+
+
+  <div
+    class="hiddenBox"
+    id="answerBox">
+
+    Suggested answer:
+    <br><br>
+
+    The program checks
+    <b>password.length</b>.
+    A password with 8 or more characters
+    makes the condition true.
+    <br><br>
+
+    Try changing
+    <b>"hello123"</b>
+    to another value and run it.
+
+  </div>
+
+</section>
+
+
+<!-- MISSION -->
+
+<section class="card panel">
+
+  <h3>🎯 Current Mission</h3>
+
+  <div class="mission">
+
+    <span class="muted">
+      Lesson
+    </span>
+
+    <span id="missionLesson">
+      Password Logic
+    </span>
+
+  </div>
+
+
+  <div class="mission">
+
+    <span class="muted">
+      Difficulty
+    </span>
+
+    <span id="missionDifficulty">
+      Easy
+    </span>
+
+  </div>
+
+
+  <div class="mission">
+
+    <span class="muted">
+      Objective
+    </span>
+
+    <span id="missionObjective">
+      Understand length
+    </span>
+
+  </div>
+
+
+  <div class="mission">
+
+    <span class="muted">
+      XP Reward
+    </span>
+
+    <span id="missionXP">
+      +100 XP
+    </span>
+
+  </div>
+
+
+  <div class="progressBar">
+
+    <div
+      class="progressFill"
+      id="progressFill">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CONCEPT -->
+
+<section class="card panel">
+
+  <h3>🛡️ Security Rule</h3>
+
+  <p
+    class="panelText"
+    id="securityRule">
+
+    Never assume user input is safe.
+    Validate data before using it.
+    
+  </p>
+
+</section>
+
+</aside>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+  <div class="modalBox">
+
+    <div
+      class="modalIcon"
+      id="modalIcon">
+      🟢
+    </div>
+
+    <h2 id="modalTitle">
+      Challenge Complete
+    </h2>
+
+    <p id="modalText">
+      Good work.
+    </p>
+
+    <button
+      class="closeModal"
+      onclick="closeModal()">
+      CONTINUE LEARNING
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   HACKLAB ENGINE
+===================================================== */
+
+
+/* -----------------------------
+   STATE
+----------------------------- */
+
+let currentLesson = 1;
+
+let xp = Number(
+  localStorage.getItem("hacklabXP") || 0
+);
+
+let challenges = Number(
+  localStorage.getItem("hacklabChallenges") || 0
+);
+
+let difficulty = "easy";
+
+let completedLessons =
+  JSON.parse(
+    localStorage.getItem("hacklabLessons") || "[]"
+  );
+
+
+/* -----------------------------
+   LESSON DATABASE
+----------------------------- */
+
+const lessons = [
+
+  {
+    title:"Password Logic",
+
+    level:"Beginner",
+
+    objective:"Understand password length",
+
+    xp:100,
+
+    rule:
+      "Password strength is more than just length. Long unique passwords are generally harder to guess.",
+
+    code:`// Lesson 1
+// Make isStrong become true.
+
+const password = "hello123";
+
+const isStrong =
+  password.length >= 8;
+
+console.log(isStrong);`,
+
+    answer:`const password = "myStrongPassword123";
+
+const isStrong =
+  password.length >= 8;
+
+console.log(isStrong);`,
+
+    guide:
+      "Look at the .length property. It tells JavaScript how many characters are inside the string.",
+
+    challenge:
+      "Change the password so the program prints true.",
+
+    flag:"HACKLAB{PASSWORD_LENGTH}"
+
+  },
+
+
+  {
+    title:"Password Patterns",
+
+    level:"Beginner",
+
+    objective:"Detect weak password patterns",
+
+    xp:120,
+
+    rule:
+      "A password can be long but still predictable. Security checks should consider common patterns.",
+
+    code:`const password = "password123";
+
+const weakWords = [
+  "password",
+  "123456",
+  "admin"
+];
+
+const isWeak =
+  weakWords.some(word =>
+    password.toLowerCase()
+      .includes(word)
+  );
+
+console.log(isWeak);`,
+
+    answer:`const password = "randomUniquePhrase";
+
+const weakWords = [
+  "password",
+  "123456",
+  "admin"
+];
+
+const isWeak =
+  weakWords.some(word =>
+    password.toLowerCase()
+      .includes(word)
+  );
+
+console.log(isWeak);`,
+
+    guide:
+      "The array contains known weak patterns. .some() checks whether at least one item satisfies the condition.",
+
+    challenge:
+      "Try a password that does not contain any weak word.",
+
+    flag:"HACKLAB{PATTERN_CHECK}"
+
+  },
+
+
+  {
+    title:"Hashing Concept",
+
+    level:"Beginner",
+
+    objective:"Understand hashes",
+
+    xp:140,
+
+    rule:
+      "Hashing transforms data into a fixed-looking value. Secure password storage uses slow password-hashing algorithms rather than storing plaintext passwords.",
+
+    code:`function fakeHash(text){
+  let total = 0;
+
+  for(const char of text){
+    total += char.charCodeAt(0);
+  }
+
+  return total;
+}
+
+console.log(
+  fakeHash("hello")
+);`,
+
+    answer:`function fakeHash(text){
+  let total = 0;
+
+  for(const char of text){
+    total += char.charCodeAt(0);
+  }
+
+  return total;
+}
+
+console.log(
+  fakeHash("hello")
+);`,
+
+    guide:
+      "This is intentionally NOT a real secure password hash. It only demonstrates the idea of transforming input into another representation.",
+
+    challenge:
+      "Change the input and observe how the simulated hash changes.",
+
+    flag:"HACKLAB{HASHING_CONCEPT}"
+
+  },
+
+
+  {
+    title:"Input Validation",
+
+    level:"Medium",
+
+    objective:"Never trust raw input",
+
+    xp:160,
+
+    rule:
+      "Validate type, length, format and allowed values before processing user input.",
+
+    code:`function validateUsername(name){
+
+  if(typeof name !== "string"){
+    return false;
+  }
+
+  if(name.length < 3){
+    return false;
+  }
+
+  if(name.length > 20){
+    return false;
+  }
+
+  return true;
+}
+
+console.log(
+  validateUsername("jay")
+);`,
+
+    answer:`function validateUsername(name){
+
+  if(typeof name !== "string"){
+    return false;
+  }
+
+  if(name.length < 3){
+    return false;
+  }
+
+  if(name.length > 20){
+    return false;
+  }
+
+  return true;
+}
+
+console.log(
+  validateUsername("user123")
+);`,
+
+    guide:
+      "The function checks the type first, then minimum and maximum length. This is a basic allow/deny validation pattern.",
+
+    challenge:
+      "Test several usernames and predict the result before running the code.",
+
+    flag:"HACKLAB{INPUT_VALIDATION}"
+
+  },
+
+
+  {
+    title:"Encoding vs Encryption",
+
+    level:"Medium",
+
+    objective:"Understand Base64",
+
+    xp:170,
+
+    rule:
+      "Encoding is designed for representation, not secrecy. Base64 can be decoded by anyone who has the data.",
+
+    code:`const text = "hello";
+
+const encoded =
+  btoa(text);
+
+const decoded =
+  atob(encoded);
+
+console.log(encoded);
+console.log(decoded);`,
+
+    answer:`const text = "cybersecurity";
+
+const encoded =
+  btoa(text);
+
+const decoded =
+  atob(encoded);
+
+console.log(encoded);
+console.log(decoded);`,
+
+    guide:
+      "btoa() encodes text into Base64. atob() reverses it. Notice that no secret key is required.",
+
+    challenge:
+      "Encode your own harmless word and then decode it.",
+
+    flag:"HACKLAB{ENCODING_IS_NOT_ENCRYPTION}"
+
+  },
+
+
+  {
+    title:"Authentication",
+
+    level:"Medium",
+
+    objective:"Build basic login verification",
+
+    xp:190,
+
+    rule:
+      "Authentication should verify credentials and avoid exposing sensitive information.",
+
+    code:`const user = {
+  username: "student",
+  password: "labpass"
+};
+
+function login(name, pass){
+
+  return (
+    name === user.username &&
+    pass === user.password
+  );
+}
+
+console.log(
+  login("student","wrong")
+);`,
+
+    answer:`const user = {
+  username: "student",
+  password: "labpass"
+};
+
+function login(name, pass){
+
+  return (
+    name === user.username &&
+    pass === user.password
+  );
+}
+
+console.log(
+  login("student","labpass")
+);`,
+
+    guide:
+      "The login function compares the supplied username and password with the simulated account.",
+
+    challenge:
+      "Make the simulated login return true using the values already visible in the lesson.",
+
+    flag:"HACKLAB{AUTH_LOGIC}"
+
+  },
+
+
+  {
+    title:"SQL Injection Concept",
+
+    level:"Hard",
+
+    objective:"Understand unsafe query construction",
+
+    xp:230,
+
+    rule:
+      "SQL injection happens when untrusted input is treated as part of a database query instead of data. Parameterized queries are the standard defense.",
+
+    code:`// Toy example only.
+// This does NOT connect to a real database.
+
+const username = "student";
+
+const query =
+  "SELECT * FROM users WHERE username = '"
+  + username +
+  "'";
+
+console.log(query);`,
+
+    answer:`// Safer conceptual approach:
+
+const username = "student";
+
+const query =
+  "SELECT * FROM users WHERE username = ?";
+
+const parameters = [
+  username
+];
+
+console.log(query);
+console.log(parameters);`,
+
+    guide:
+      "The unsafe version mixes data with query text. The safer version keeps the query structure separate from the parameter.",
+
+    challenge:
+      "Rewrite the toy query so the username is passed as a parameter instead of being concatenated.",
+
+    flag:"HACKLAB{PARAMETERIZED_QUERIES}"
+
+  },
+
+
+  {
+    title:"HTTP Status Codes",
+
+    level:"Hard",
+
+    objective:"Understand HTTP responses",
+
+    xp:210,
+
+    rule:
+      "HTTP status codes communicate the result of a request.",
+
+    code:`const responses = {
+  200:"OK",
+  201:"Created",
+  400:"Bad Request",
+  401:"Unauthorized",
+  403:"Forbidden",
+  404:"Not Found",
+  500:"Server Error"
+};
+
+console.log(
+  responses[404]
+);`,
+
+    answer:`const responses = {
+  200:"OK",
+  201:"Created",
+  400:"Bad Request",
+  401:"Unauthorized",
+  403:"Forbidden",
+  404:"Not Found",
+  500:"Server Error"
+};
+
+console.log(
+  responses[401]
+);`,
+
+    guide:
+      "Use the status code as the object key. For example, 404 represents a resource that was not found.",
+
+    challenge:
+      "Change the number and predict which HTTP response description appears.",
+
+    flag:"HACKLAB{HTTP_STATUS}"
+
+  },
+
+
+  {
+    title:"Session Security",
+
+    level:"Hard",
+
+    objective:"Understand session expiration",
+
+    xp:240,
+
+    rule:
+      "Authentication sessions should have controlled lifetimes and should not remain valid forever.",
+
+    code:`const session = {
+  createdAt: Date.now(),
+  maxAge: 60000
+};
+
+function validSession(now){
+  return (
+    now - session.createdAt
+    < session.maxAge
+  );
+}
+
+console.log(
+  validSession(Date.now())
+);`,
+
+    answer:`const session = {
+  createdAt: Date.now(),
+  maxAge: 60000
+};
+
+function validSession(now){
+  return (
+    now - session.createdAt
+    < session.maxAge
+  );
+}
+
+const future =
+  session.createdAt + 70000;
+
+console.log(
+  validSession(future)
+);`,
+
+    guide:
+      "A session is valid while elapsed time is smaller than maxAge. Test a timestamp that is farther in the future.",
+
+    challenge:
+      "Make the simulated session expire by testing a future timestamp.",
+
+    flag:"HACKLAB{SESSION_EXPIRATION}"
+
+  },
+
+
+  {
+    title:"DOM Input Safety",
+
+    level:"Difficult",
+
+    objective:"Understand safe DOM updates",
+
+    xp:270,
+
+    rule:
+      "When displaying untrusted text, using textContent is generally safer than interpreting the text as HTML.",
+
+    code:`const message =
+  "<b>Hello</b>";
+
+const box =
+  document.createElement("div");
+
+box.textContent = message;
+
+console.log(
+  box.textContent
+);`,
+
+    answer:`const message =
+  "<b>Hello</b>";
+
+const box =
+  document.createElement("div");
+
+box.textContent = message;
+
+console.log(
+  box.textContent
+);`,
+
+    guide:
+      "textContent treats the value as text. HTML markup is not interpreted as executable page structure.",
+
+    challenge:
+      "Explain why textContent is safer for displaying untrusted text than directly interpreting HTML.",
+
+    flag:"HACKLAB{TEXTCONTENT}"
+
+  },
+
+
+  {
+    title:"Security Headers",
+
+    level:"Difficult",
+
+    objective:"Understand defensive HTTP headers",
+
+    xp:290,
+
+    rule:
+      "Security-related response headers can help browsers enforce safer behavior.",
+
+    code:`const headers = {
+  "Content-Security-Policy":
+    "default-src 'self'",
+
+  "X-Content-Type-Options":
+    "nosniff",
+
+  "Referrer-Policy":
+    "strict-origin"
+};
+
+console.log(
+  headers["X-Content-Type-Options"]
+);`,
+
+    answer:`const headers = {
+  "Content-Security-Policy":
+    "default-src 'self'",
+
+  "X-Content-Type-Options":
+    "nosniff",
+
+  "Referrer-Policy":
+    "strict-origin"
+};
+
+console.log(
+  headers["Content-Security-Policy"]
+);`,
+
+    guide:
+      "Headers are represented here as a JavaScript object. Pick a key to retrieve its value.",
+
+    challenge:
+      "Print the Content-Security-Policy value.",
+
+    flag:"HACKLAB{SECURITY_HEADERS}"
+
+  },
+
+
+  {
+    title:"Threat Modeling",
+
+    level:"Difficult",
+
+    objective:"Think like a security engineer",
+
+    xp:320,
+
+    rule:
+      "Security starts with identifying assets, threats, attack surfaces and defenses.",
+
+    code:`const system = {
+  asset:"user accounts",
+  entryPoint:"login form",
+  risk:"credential abuse",
+  defense:"rate limiting"
+};
+
+console.log(
+  system.defense
+);`,
+
+    answer:`const system = {
+  asset:"user accounts",
+  entryPoint:"login form",
+  risk:"credential abuse",
+  defense:"rate limiting"
+};
+
+console.log(
+  system.risk
+);`,
+
+    guide:
+      "A simple threat model asks what needs protection, where users interact with the system, what can go wrong, and what controls reduce the risk.",
+
+    challenge:
+      "Print the risk stored in the simulated system.",
+
+    flag:"HACKLAB{THREAT_MODELING}"
+
+  }
+
+];
+
+
+/* =====================================================
+   DIFFICULTY
+===================================================== */
+
+const difficultySettings = {
+
+  easy:{
+    label:"Easy",
+    multiplier:1
+  },
+
+  medium:{
+    label:"Medium",
+    multiplier:1.2
+  },
+
+  hard:{
+    label:"Hard",
+    multiplier:1.5
+  },
+
+  difficult:{
+    label:"Difficult",
+    multiplier:2
+  }
+
+};
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const terminal =
+  document.getElementById("terminal");
+
+const commandInput =
+  document.getElementById("commandInput");
+
+const codeEditor =
+  document.getElementById("codeEditor");
+
+const codeOutput =
+  document.getElementById("codeOutput");
+
+
+/* =====================================================
+   TERMINAL
+===================================================== */
+
+function terminalLine(
+  text,
+  type="output"
+){
+
+  const div =
+    document.createElement("div");
+
+  div.className =
+    "line "+type;
+
+  div.textContent =
+    text;
+
+  terminal.appendChild(div);
+
+  terminal.scrollTop =
+    terminal.scrollHeight;
+
+}
+
+
+function runCommand(){
+
+  const raw =
+    commandInput.value.trim();
+
+  if(!raw)
+    return;
+
+
+  terminalLine(
+    "$ "+raw,
+    "prompt"
+  );
+
+
+  const parts =
+    raw.split(/\s+/);
+
+  const command =
+    parts[0].toLowerCase();
+
+
+  if(command==="help"){
+
+    terminalLine(
+`Available local commands:
+
+help       show commands
+clear      clear terminal
+whoami     show lab identity
+status     show learning status
+lessons    list lesson topics
+info       explain the current lesson
+scan       inspect simulated target
+headers    show sample HTTP headers
+users      show toy local users
+hash       demonstrate fake hash concept
+encode     demonstrate Base64
+flag       show CTF instructions`,
+      "info"
+    );
+
+  }
+
+
+  else if(command==="clear"){
+
+    terminal.innerHTML="";
+
+  }
+
+
+  else if(command==="whoami"){
+
+    terminalLine(
+      "student@hacklab",
+      "success"
+    );
+
+  }
+
+
+  else if(command==="status"){
+
+    terminalLine(
+      "System: HACKLAB LOCAL",
+      "output"
+    );
+
+    terminalLine(
+      "Mode: Learning",
+      "output"
+    );
+
+    terminalLine(
+      "Difficulty: "+
+      difficultySettings[difficulty].label,
+      "output"
+    );
+
+    terminalLine(
+      "Lesson: "+
+      currentLesson+
+      "/"+
+      lessons.length,
+      "output"
+    );
+
+  }
+
+
+  else if(command==="lessons"){
+
+    lessons.forEach(
+      (lesson,index)=>{
+
+        terminalLine(
+          `${index+1}. ${lesson.title}`,
+          index+1===currentLesson
+            ? "success"
+            : "output"
+        );
+
+      }
+    );
+
+  }
+
+
+  else if(command==="info"){
+
+    const lesson =
+      lessons[currentLesson-1];
+
+    terminalLine(
+      lesson.title,
+      "success"
+    );
+
+    terminalLine(
+      lesson.guide,
+      "info"
+    );
+
+  }
+
+
+  else if(command==="scan"){
+
+    terminalLine(
+      "Scanning simulated target...",
+      "warning"
+    );
+
+    terminalLine(
+      "TARGET: local-hacklab",
+      "output"
+    );
+
+    terminalLine(
+      "NETWORK ACCESS: DISABLED",
+      "success"
+    );
+
+    terminalLine(
+      "REAL SYSTEMS: NOT CONNECTED",
+      "success"
+    );
+
+    terminalLine(
+      "Purpose: cybersecurity practice",
+      "info"
+    );
+
+  }
+
+
+  else if(command==="headers"){
+
+    terminalLine(
+`HTTP/1.1 200 OK
+Content-Type: text/html
+Content-Security-Policy: default-src 'self'
+X-Content-Type-Options: nosniff
+Referrer-Policy: strict-origin`,
+      "info"
+    );
+
+  }
+
+
+  else if(command==="users"){
+
+    terminalLine(
+`LOCAL TOY DATABASE
+id: 1
+username: student
+
+id: 2
+username: analyst
+
+No real accounts are connected.`,
+      "output"
+    );
+
+  }
+
+
+  else if(command==="hash"){
+
+    terminalLine(
+      "Hashing transforms input into another representation.",
+      "info"
+    );
+
+    terminalLine(
+      "Use the Code Lab to inspect the simulated hash function.",
+      "output"
+    );
+
+  }
+
+
+  else if(command==="encode"){
+
+    const sample =
+      btoa("hello");
+
+    terminalLine(
+      "hello → "+sample,
+      "info"
+    );
+
+    terminalLine(
+      "Remember: encoding is NOT encryption.",
+      "warning"
+    );
+
+  }
+
+
+  else if(command==="flag"){
+
+    terminalLine(
+      "Complete the lesson challenge, then submit the flag.",
+      "info"
+    );
+
+    terminalLine(
+      "Flags are intentionally inside the local training environment.",
+      "output"
+    );
+
+  }
+
+
+  else{
+
+    terminalLine(
+      "Unknown command. Type 'help'.",
+      "error"
+    );
+
+  }
+
+
+  commandInput.value="";
+
+}
+
+
+commandInput.addEventListener(
+  "keydown",
+  e=>{
+
+    if(e.key==="Enter")
+      runCommand();
+
+  }
+);
+
+
+/* =====================================================
+   RUN JAVASCRIPT
+===================================================== */
+
+function runCode(){
+
+  const originalLog =
+    console.log;
+
+  let logs=[];
+
+
+  console.log =
+    (...args)=>{
+
+      logs.push(
+        args.map(
+          value =>
+            typeof value==="object"
+            ? JSON.stringify(value)
+            : String(value)
+        ).join(" ")
+      );
+
+    };
+
+
+  try{
+
+    new Function(
+      codeEditor.value
+    )();
+
+
+    codeOutput.textContent =
+      logs.length
+      ? logs.join("\n")
+      : "Code executed successfully.";
+
+    codeOutput.style.color =
+      "#39e58c";
+
+
+    const lesson =
+      lessons[currentLesson-1];
+
+
+    if(
+      currentLesson===1 &&
+      logs.some(
+        x=>x==="true"
+      )
+    ){
+
+      completeLesson();
+
+    }
+
+
+  }catch(error){
+
+    codeOutput.textContent =
+      "Error: "+error.message;
+
+    codeOutput.style.color =
+      "#ff5d6c";
+
+  }
+
+
+  console.log =
+    originalLog;
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetCode(){
+
+  codeEditor.value =
+    lessons[currentLesson-1].code;
+
+  codeOutput.textContent =
+    "Output will appear here...";
+
+  codeOutput.style.color =
+    "#aeb7c1";
+
+}
+
+
+/* =====================================================
+   ANSWER
+===================================================== */
+
+function showAnswer(){
+
+  const lesson =
+    lessons[currentLesson-1];
+
+
+  codeEditor.value =
+    lesson.answer;
+
+
+  document.getElementById(
+    "answerBox"
+  ).style.display="block";
+
+
+  codeOutput.textContent =
+    "Suggested answer loaded into the editor.";
+
+  codeOutput.style.color =
+    "#b388ff";
+
+}
+
+
+/* =====================================================
+   COMPLETE LESSON
+===================================================== */
+
+function completeLesson(){
+
+  if(
+    completedLessons.includes(
+      currentLesson
+    )
+  ){
+
+    return;
+
+  }
+
+
+  completedLessons.push(
+    currentLesson
+  );
+
+
+  const baseXP =
+    lessons[currentLesson-1].xp;
+
+
+  const reward =
+    Math.round(
+      baseXP *
+      difficultySettings[difficulty]
+        .multiplier
+    );
+
+
+  xp += reward;
+
+  challenges++;
+
+
+  localStorage.setItem(
+    "hacklabXP",
+    xp
+  );
+
+
+  localStorage.setItem(
+    "hacklabChallenges",
+    challenges
+  );
+
+
+  localStorage.setItem(
+    "hacklabLessons",
+    JSON.stringify(
+      completedLessons
+    )
+  );
+
+
+  updateStats();
+
+
+  showModal(
+    "🟢",
+    "Lesson Completed",
+    "+"+reward+
+    " XP earned. Keep going."
+  );
+
+}
+
+
+/* =====================================================
+   LESSON NAVIGATION
+===================================================== */
+
+function loadLesson(){
+
+  const lesson =
+    lessons[currentLesson-1];
+
+
+  codeEditor.value =
+    lesson.code;
+
+
+  document.getElementById(
+    "lessonStat"
+  ).textContent =
+    currentLesson+
+    " / "+
+    lessons.length;
+
+
+  document.getElementById(
+    "lessonDifficulty"
+  ).textContent =
+    lesson.level;
+
+
+  document.getElementById(
+    "missionLesson"
+  ).textContent =
+    lesson.title;
+
+
+  document.getElementById(
+    "missionDifficulty"
+  ).textContent =
+    difficultySettings[difficulty].label;
+
+
+  document.getElementById(
+    "missionObjective"
+  ).textContent =
+    lesson.objective;
+
+
+  document.getElementById(
+    "missionXP"
+  ).textContent =
+    "+"+
+    Math.round(
+      lesson.xp *
+      difficultySettings[difficulty].multiplier
+    )+
+    " XP";
+
+
+  document.getElementById(
+    "securityRule"
+  ).textContent =
+    lesson.rule;
+
+
+  document.getElementById(
+    "ctfText"
+  ).textContent =
+    lesson.challenge;
+
+
+  codeOutput.textContent =
+    "Output will appear here...";
+
+
+  document.getElementById(
+    "hintBox"
+  ).style.display="none";
+
+
+  document.getElementById(
+    "answerBox"
+  ).style.display="none";
+
+
+  updateProgress();
+
+}
+
+
+function nextLesson(){
+
+  if(
+    currentLesson <
+    lessons.length
+  ){
+
+    currentLesson++;
+
+    loadLesson();
+
+    setStatus(
+      "LEARNING"
+    );
+
+  }else{
+
+    showModal(
+      "🏆",
+      "Course Complete",
+      "You reached the end of the HACKLAB curriculum."
+    );
+
+  }
+
+}
+
+
+function previousLesson(){
+
+  if(currentLesson>1){
+
+    currentLesson--;
+
+    loadLesson();
+
+  }
+
+}
+
+
+/* =====================================================
+   DIFFICULTY
+===================================================== */
+
+function setDifficulty(newDifficulty){
+
+  difficulty =
+    newDifficulty;
+
+
+  document
+    .querySelectorAll(".diff")
+    .forEach(
+      btn =>
+        btn.classList.remove(
+          "active"
+        )
+    );
+
+
+  document.getElementById(
+    newDifficulty+"Btn"
+  ).classList.add("active");
+
+
+  loadLesson();
+
+
+  setStatus(
+    difficultySettings[
+      newDifficulty
+    ].label.toUpperCase()
+  );
+
+}
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+function updateProgress(){
+
+  const completed =
+    completedLessons.length;
+
+
+  const percentage =
+    Math.min(
+      100,
+      (completed/
+      lessons.length)*100
+    );
+
+
+  document.getElementById(
+    "progressFill"
+  ).style.width =
+    percentage+"%";
+
+}
+
+
+function updateStats(){
+
+  document.getElementById(
+    "xp"
+  ).textContent =
+    xp;
+
+
+  document.getElementById(
+    "challengeStat"
+  ).textContent =
+    challenges;
+
+
+  document.getElementById(
+    "levelBadge"
+  ).textContent =
+    "LEVEL "+
+    String(
+      Math.floor(xp/500)+1
+    ).padStart(2,"0");
+
+
+  updateProgress();
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function setStatus(text){
+
+  document.getElementById(
+    "status"
+  ).textContent =
+    text;
+
+}
+
+
+/* =====================================================
+   HINT
+===================================================== */
+
+function toggleBox(id){
+
+  const box =
+    document.getElementById(id);
+
+
+  box.style.display =
+    box.style.display==="block"
+    ? "none"
+    : "block";
+
+}
+
+
+/* =====================================================
+   CTF
+===================================================== */
+
+function submitFlag(){
+
+  const input =
+    document.getElementById(
+      "flagInput"
+    );
+
+
+  const value =
+    input.value.trim();
+
+
+  const correct =
+    lessons[
+      currentLesson-1
+    ].flag;
+
+
+  if(
+    value.toUpperCase()===
+    correct
+  ){
+
+    showModal(
+      "🏴",
+      "Flag Captured",
+      "Correct. You understood the current concept."
+    );
+
+
+    input.value="";
+
+    xp += 50;
+
+    challenges++;
+
+    localStorage.setItem(
+      "hacklabXP",
+      xp
+    );
+
+    localStorage.setItem(
+      "hacklabChallenges",
+      challenges
+    );
+
+    updateStats();
+
+  }else{
+
+    showModal(
+      "🔎",
+      "Not Yet",
+      "Read the guide, inspect the code and try the lesson again."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+function showModal(
+  icon,
+  title,
+  message
+){
+
+  document.getElementById(
+    "modalIcon"
+  ).textContent =
+    icon;
+
+
+  document.getElementById(
+    "modalTitle"
+  ).textContent =
+    title;
+
+
+  document.getElementById(
+    "modalText"
+  ).textContent =
+    message;
+
+
+  document.getElementById(
+    "modal"
+  ).style.display =
+    "flex";
+
+}
+
+
+function closeModal(){
+
+  document.getElementById(
+    "modal"
+  ).style.display =
+    "none";
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+loadLesson();
+
+updateStats();
+
+</script>
+
+</body>
+</html>
